@@ -6,3 +6,12 @@
 .App > div {
   margin-right: 50px;
 }
+.completed{
+  opacity: 50%;
+}
+.activeButton {
+  background-color: rgba(88, 197, 10, 0.88);
+}
+.error {
+  border: 3px solid red;
+}

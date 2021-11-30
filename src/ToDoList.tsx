@@ -1,47 +1,62 @@
-import React from "react";
+import React, {ChangeEvent, KeyboardEvent, useState} from "react";
+import {FilterValuesType, TaskType} from "./App";
 
 type TypeOfProps = {
     title: string
-    tasks: Array<TypeOfTask>
-}
-type TypeOfTask = {
-    id: number
-    title: string
-    isDone: boolean
+    tasks: Array<TaskType>
+    removeTask: (taskID: string) => void
+    changeFilter: (filter: FilterValuesType) => void
+    addTask: (title:string) => void
+    filter: FilterValuesType
 }
 
-export const tasks_1: Array<TypeOfTask> = [
-    {id: 1, title: "HTML", isDone: false},
-    {id: 2, title: "Css", isDone: false},
-    {id: 3, title: "Redux", isDone: true}
-]
-export const tasks_2: Array<TypeOfTask> = [
-    {id: 4, title: "bmw", isDone: false},
-    {id: 5, title: "vag", isDone: false},
-    {id: 6, title: "opel", isDone: true}
-]
 
 function ToDoList(props: TypeOfProps) {
+
+    const tasksJSX = props.tasks.map(t => {
+        return (
+            <li key={t.id}  >
+                <input type="checkbox" checked={t.isDone} />
+                <span className={t.isDone ? "completed": ""}>{t.title}</span>
+                <button onClick={() => {props.removeTask(t.id)}}>x</button>
+            </li>)
+    })
+
+    //обработка событий
+    const addTask = () => {
+        const trimmedTitle = newTaskTittle.trim()
+            if(trimmedTitle) {props.addTask(trimmedTitle)}
+        setNewTaskTittle(""); }
+
+    const onChangeHandler = (e:ChangeEvent<HTMLInputElement>) => {setNewTaskTittle(e.currentTarget.value)}
+    const onKeyPressHandler = (e:KeyboardEvent<HTMLInputElement>) =>{
+        if(e.key === "Enter"){addTask()}
+    }
+    const onAllClickHandler = () => {props.changeFilter("all")}
+    const onActiveClickHandler = () => {props.changeFilter("active")}
+    const onCompletedClickHandler = () => {props.changeFilter("completed")}
+    const buttonStatus = (filter:FilterValuesType ) => { return  props.filter === filter ? "activeButton": ""} //меняет класс кнопкам в зависимости от фильтрации в аpp.tsx
+
+    //локальный стейт для инпута
+    const [newTaskTittle, setNewTaskTittle] = useState("")
+
     return (
         <div className="App">
             <div>
                 <h3>{props.title}</h3>
                 <div>
-                    <input/>
-                    <button>+</button>
+                    <input value={newTaskTittle}
+                           onChange={onChangeHandler}
+                           onKeyPress={onKeyPressHandler}/>
+                    <button onClick={addTask}>+</button>
                 </div>
                 <ul>
-                    <li><input type="checkbox" checked={props.tasks[0].isDone}/> <span>{props.tasks[0].title}</span>
-                    </li>
-                    <li><input type="checkbox" checked={props.tasks[1].isDone}/> <span>{props.tasks[1].title}</span>
-                    </li>
-                    <li><input type="checkbox" checked={props.tasks[2].isDone}/> <span>{props.tasks[2].title}</span>
-                    </li>
+                    {tasksJSX}
                 </ul>
                 <div>
-                    <button>All</button>
-                    <button>Active</button>
-                    <button>Completed</button>
+                    <button onClick={onAllClickHandler} className={buttonStatus("all")}>All</button>
+                    <button onClick={onActiveClickHandler} className={buttonStatus("active")}>Active</button>
+                    <button onClick={onCompletedClickHandler} className={buttonStatus("completed")}>Completed</button>
                 </div>
             </div>
         </div>
