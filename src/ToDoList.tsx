@@ -11,7 +11,7 @@ type TypeOfProps = {
 }
 
 
-function ToDoList(props: TypeOfProps) {
+function ToD oList(props: TypeOfProps) {
 
     const tasksJSX = props.tasks.map(t => {
         return (
