@@ -12,6 +12,22 @@
 .activeButton {
   background-color: rgba(88, 197, 10, 0.88);
 }
+.defaultInput {
+  border: 2px solid black;
+  margin: 7px;
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.errorInput {
+  margin: 7px;
+  border: 2px solid red;
+  border-radius: 4px;
+  padding: 4px;
+}
+
 .error {
-  border: 3px solid red;
+  color: red;
+  margin-left: 4px;
+
 }
