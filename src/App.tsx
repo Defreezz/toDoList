@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import ToDoList from "./ToDoList";
 import {v1} from "uuid";
+import {AddItemInput} from "./AddItemInput/AddItemInput";
 
 export type TaskType = {
     id: string
@@ -56,21 +57,24 @@ function App() {
         //     setTasks({...tasks})
         }
 
-
-
     //Фильрация таски
     const changeFilter = (filter: FilterValuesType, todolistID: string) => {
         const updatedTodoLists = todoLists.map(tdl => tdl.id === todolistID ? {...tdl, filter: filter} : tdl)
         setTodoLists(updatedTodoLists)
     }
-
-
     //Добавление таски
     function addTask(title: string, todolistID: string) {
         const copyState = {...tasks}
         let inputTask = {id: v1(), title: title, isDone: false}
         copyState[todolistID] = [inputTask, ...copyState[todolistID]]
         setTasks(copyState)
+    }
+    //Переименование таски
+    function renameTask(taskID: string, todolistID: string,newTitle:string){
+        const copyState = {...tasks}
+        copyState[todolistID] = copyState[todolistID].map(t => t.id === taskID? {...t,title:newTitle}:t)
+        setTasks(copyState)
+
     }
 
     //Удаление таски
@@ -81,6 +85,31 @@ function App() {
         setTasks(copyState)
     }
 
+
+
+    //Добавление тудулиста
+    function addTodoList (title:string){
+        let copyState = [...todoLists]
+        let inputTodoList:TodoListType  = {id: v1(), title: title,filter: "all"}
+        copyState = [inputTodoList, ...copyState]
+        setTodoLists(copyState)
+        setTasks({...tasks,[inputTodoList.id]:[]})
+    }
+
+    //Удаление тудулиста
+    const removeTodoList = (todolistID: string) => {
+        let copyState = [...todoLists]
+        copyState = copyState.filter(t => t.id !== todolistID)
+        setTodoLists(copyState)
+    }
+    //Переименование Тудулиста
+    function renameTodolist (todolistID: string, newTitle:string){
+        let copyState = [...todoLists]
+        copyState = copyState.map(t => t.id === todolistID? {...t,title:newTitle}:t)
+        debugger
+        setTodoLists(copyState)
+
+    }
     //map для тудулистОВ
     const todoListRender = todoLists.map((tdl) => {
             let tasksForRender = tasks[tdl.id]
@@ -97,6 +126,9 @@ function App() {
                         title={tdl.title}
                         tasks={tasksForRender}
                         removeTask={removeTask}
+                        renameTask={renameTask}
+                        removeTodolist={removeTodoList}
+                        renameTodolist={renameTodolist}
                         changeFilter={changeFilter}
                         addTask={addTask}
                         changeTaskStatus={changeTaskStatus}
@@ -108,6 +140,7 @@ function App() {
     //UI
     return (
         <div className={"App"}>
+           <AddItemInput addItem={addTodoList}/>
             {todoListRender}
         </div>
     );
