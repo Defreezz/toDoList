@@ -3,6 +3,8 @@ import './App.css';
 import ToDoList from "./ToDoList";
 import {v1} from "uuid";
 import {AddItemInput} from "./AddItemInput/AddItemInput";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {Menu} from "@material-ui/icons";
 
 export type TaskType = {
     id: string
@@ -85,8 +87,6 @@ function App() {
         setTasks(copyState)
     }
 
-
-
     //Добавление тудулиста
     function addTodoList (title:string){
         let copyState = [...todoLists]
@@ -120,29 +120,53 @@ function App() {
                 tasksForRender = tasks[tdl.id].filter(t => t.isDone === true)
             }
                 return (
-                    <ToDoList
-                        key={tdl.id}
-                        id={tdl.id}
-                        title={tdl.title}
-                        tasks={tasksForRender}
-                        removeTask={removeTask}
-                        renameTask={renameTask}
-                        removeTodolist={removeTodoList}
-                        renameTodolist={renameTodolist}
-                        changeFilter={changeFilter}
-                        addTask={addTask}
-                        changeTaskStatus={changeTaskStatus}
-                        filter={tdl.filter}
-                    />)
+                    <Grid item key={tdl.id}>
+                    <Paper elevation={8} style={{padding:"16px"}}>
+                        <ToDoList
+                            key={tdl.id}
+                            id={tdl.id}
+                            title={tdl.title}
+                            tasks={tasksForRender}
+                            removeTask={removeTask}
+                            renameTask={renameTask}
+                            removeTodolist={removeTodoList}
+                            renameTodolist={renameTodolist}
+                            changeFilter={changeFilter}
+                            addTask={addTask}
+                            changeTaskStatus={changeTaskStatus}
+                            filter={tdl.filter}
+                        />
+                    </Paper>
+                    </Grid>)
+
             }
         )
 
     //UI
     return (
         <div className={"App"}>
-           <AddItemInput addItem={addTodoList}/>
+            <AppBar position={"static"}>
+                <Toolbar style={{justifyContent:"space-between"}} >
+                    <IconButton>
+                        <Menu/>
+                    </IconButton>
+                    <Typography>
+                        Todolists
+                    </Typography>
+                    <Button>Login</Button>
+                </Toolbar>
+            </AppBar>
+            <Container fixed>
+                <Grid container style={{padding:"20px 0 20px 0" }}>
+                    <AddItemInput addItem={addTodoList}/>
+                </Grid>
+                <Grid container spacing={3}>
             {todoListRender}
+                </Grid>
+            </Container>
         </div>
+
+
     );
 }
 

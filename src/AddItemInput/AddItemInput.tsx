@@ -1,4 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {IconButton, TextField} from "@material-ui/core";
+import {AddBox} from "@material-ui/icons";
 
 type AddItemInputType = {
     addItem: (title:string) => void
@@ -9,7 +11,7 @@ export function AddItemInput({addItem}: AddItemInputType) {
     const [newTaskTittle, setNewTaskTittle] = useState("")
     const [error, setError] = useState<string>("")
 
-    const errorClass = (error !== '' ? "errorInput" : "defaultInput")
+   // const errorClass = (error !== '' ? "errorInput" : "defaultInput")
 
     const addTask = () => {
         const trimmedTitle = newTaskTittle.trim()
@@ -32,14 +34,19 @@ export function AddItemInput({addItem}: AddItemInputType) {
 
     return (
         <div>
-            <input
-                className={errorClass}
-                   value={newTaskTittle}
-                   onChange={onChangeHandler}
-                   onKeyPress={onKeyPressHandler}/>
+            <TextField
+                variant={"outlined"}
+                label={"Title"}
+                size={"small"}
+                //className={errorClass}
+                error={!!error}
+                helperText={error}
+                value={newTaskTittle}
+                onChange={onChangeHandler}
+                onKeyPress={onKeyPressHandler}/>
 
-            <button onClick={addTask}>+</button>
-            <div className={"error"}>{error}</div>
+            <IconButton size={"small"} onClick={addTask}><AddBox /></IconButton>
+            {/*<div className={"error"}>{error}</div>*/}
         </div>
     );
 };

@@ -1,33 +1,33 @@
-.App {
-  padding: 30px;
-  display: flex;
-}
+/*.App {*/
+/*  padding: 30px;*/
+/*  display: flex;*/
+/*}*/
 
-.App > div {
-  margin-right: 50px;
-}
+/*.App > div {*/
+/*  margin-right: 50px;*/
+/*}*/
 .completed{
   opacity: 50%;
 }
-.activeButton {
-  background-color: rgba(88, 197, 10, 0.88);
-}
-.defaultInput {
-  border: 2px solid black;
-  margin: 7px;
-  border-radius: 4px;
-  padding: 4px;
-}
+/*.activeButton {*/
+/*  background-color: rgba(88, 197, 10, 0.88);*/
+/*}*/
+/*.defaultInput {*/
+/*  border: 2px solid black;*/
+/*  margin: 7px;*/
+/*  border-radius: 4px;*/
+/*  padding: 4px;*/
+/*}*/
 
-.errorInput {
-  margin: 7px;
-  border: 2px solid red;
-  border-radius: 4px;
-  padding: 4px;
-}
+/*.errorInput {*/
+/*  margin: 7px;*/
+/*  border: 2px solid red;*/
+/*  border-radius: 4px;*/
+/*  padding: 4px;*/
+/*}*/
 
-.error {
-  color: red;
-  margin-left: 4px;
+/*.error {*/
+/*  color: red;*/
+/*  margin-left: 4px;*/
 
-}
+/*}*/

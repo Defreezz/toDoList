@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {TextField} from "@material-ui/core";
 
 type EditableSpanType = {
     title: string
@@ -11,7 +12,7 @@ export function EditableSpan({title, className, renameItem}: EditableSpanType) {
     const [input, setInput] = useState(" ") // записываем пустую, но сетаем тайтл реальный в колбэке
 
     return editMode
-        ? <input
+        ? <TextField
             value={input}
             onChange={(e)=> setInput(e.currentTarget.value)}
             onBlur={()=>  {
