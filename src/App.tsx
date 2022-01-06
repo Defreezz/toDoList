@@ -20,7 +20,7 @@ export type TodoListType = {
     filter: FilterValuesType
 }
 
-type TaskStateType = {
+export type TaskStateType = {
     [key: string]: TaskType[]
 }
 
@@ -161,7 +161,7 @@ function App() {
                     <AddItemInput addItem={addTodoList}/>
                 </Grid>
                 <Grid container spacing={3}>
-            {todoListRender}
+                    {todoListRender}
                 </Grid>
             </Container>
         </div>

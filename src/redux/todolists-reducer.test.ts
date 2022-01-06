@@ -53,11 +53,6 @@ test('change  name', () => {
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ]
-    const action = {
-        type: 'CHANGE-TODOLIST-TITLE',
-        id: todolistId2,
-        title: newTodolistTitle
-    };
 
     const endState = todoListsReducer(startState, renameTodoListAC(todolistId2,newTodolistTitle));
 
@@ -75,12 +70,6 @@ test('filter changed', () => {
         {id: todolistId1, title: "What to learn", filter: "all"},
         {id: todolistId2, title: "What to buy", filter: "all"}
     ]
-
-    const action = {
-        type: 'CHANGE-TODOLIST-FILTER',
-        id: todolistId2,
-        filter: newFilter
-    };
 
     const endState = todoListsReducer(startState, changeFilterTodoListAC(todolistId2,newFilter));
 

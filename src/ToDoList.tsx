@@ -5,7 +5,7 @@ import {EditableSpan} from "./EditableSpan/EditableSpan";
 import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, Typography} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 
-type TypeOfProps = {
+type TodolistType = {
     id:string
     title: string
     tasks: Array<TaskType>
@@ -20,7 +20,7 @@ type TypeOfProps = {
 }
 
 
-function ToDoList(props: TypeOfProps) {
+function ToDoList(props: TodolistType) {
 
     //мапится массив тасок
     const tasksJSX = props.tasks.map(t => {
