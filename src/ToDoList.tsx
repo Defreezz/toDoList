@@ -1,9 +1,10 @@
 import React from "react";
-import {FilterValuesType, TaskType} from "./App";
 import {AddItemInput} from "./AddItemInput/AddItemInput";
 import {EditableSpan} from "./EditableSpan/EditableSpan";
 import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, Typography} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
+import {FilterValuesType} from "./redux/todolists-reducer";
+import {TaskType} from "./redux/tasks-reducer";
 
 type TodolistType = {
     id:string

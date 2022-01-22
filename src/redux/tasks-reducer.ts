@@ -1,9 +1,8 @@
 
 import {v1} from "uuid";
-import {TaskStateType, TaskType} from "../App";
-import {addTodoListAC, removeTodoListAC} from "./todolists-reducer";
+import {addTodoListAC, removeTodoListAC, todolistID_1, todolistID_2} from "./todolists-reducer";
 
-type ActionType =
+export type ActionTaskReducerType =
     ReturnType<typeof removeTaskAC> |
     ReturnType<typeof addTaskAC> |
     ReturnType<typeof changeTaskStatusAC> |
@@ -11,8 +10,29 @@ type ActionType =
     ReturnType<typeof addTodoListAC> |
     ReturnType<typeof removeTodoListAC>
 
+export type TaskType = {
+    id: string
+    title: string
+    isDone: boolean
+}
+export type TaskStateType = {
+    [key: string]: TaskType[]
+}
 
-export function  tasksReducer (tasks:TaskStateType,action:ActionType):TaskStateType {
+const initialState:TaskStateType = {
+    // [todolistID_1]: [
+    //     {id: v1(), title: "HTML", isDone: false},
+    //     {id: v1(), title: "Css", isDone: false},
+    //     {id: v1(), title: "Redux", isDone: true}
+    // ],
+    // [todolistID_2]: [
+    //     {id: v1(), title: "Milk", isDone: false},
+    //     {id: v1(), title: "Bear", isDone: false},
+    //     {id: v1(), title: "Fish", isDone: true}
+    // ]
+}
+
+export function  tasksReducer (tasks:TaskStateType = initialState,action:ActionTaskReducerType):TaskStateType {
     switch (action.type) {
         case "REMOVE-TASK":
             return {
@@ -40,7 +60,7 @@ export function  tasksReducer (tasks:TaskStateType,action:ActionType):TaskStateT
                 )
             }
 
-            //action todoList-reducer(при добавлениии/удалении тудулиста
+            //actionЫ todoList-reducer(при добавлениии/удалении тудулиста
             // добавляет пустой массив тасок/удаляет массив тасок
             // ключ(id) создается в ActionCreator todoList-reducer
         case "ADD-TODOLIST"://заюзан ActionCreator из редьюсера тудулиста, для добавления пустого массива тасок
@@ -53,7 +73,7 @@ export function  tasksReducer (tasks:TaskStateType,action:ActionType):TaskStateT
             delete copyTasks[action.id]
             return copyTasks
         default:
-            throw new Error("error")
+            return tasks
     }
 }
 
