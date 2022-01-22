@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, useCallback, useState} from "react";
 import {TextField} from "@material-ui/core";
 
 type EditableSpanType = {
@@ -7,14 +7,16 @@ type EditableSpanType = {
     className?:string
 }
 
-export function EditableSpan({title, className, renameItem}: EditableSpanType) {
+export const EditableSpan = React.memo(
+    function ({title, className, renameItem}: EditableSpanType) {
+        console.log("span span")
     const [editMode,setEditMode] = useState(false)
     const [input, setInput] = useState(" ") // записываем пустую, но сетаем тайтл реальный в колбэке
-
+const onChangeHandler = useCallback((e:ChangeEvent<HTMLInputElement>)=> setInput(e.currentTarget.value),[setInput])
     return editMode
         ? <TextField
             value={input}
-            onChange={(e)=> setInput(e.currentTarget.value)}
+            onChange={onChangeHandler}
             onBlur={()=>  {
                 setEditMode(!editMode);
                 renameItem(input)}}
@@ -23,4 +25,4 @@ export function EditableSpan({title, className, renameItem}: EditableSpanType) {
             {title}
         </span>
 
-}
+})

@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {AddItemInput} from "./AddItemInput/AddItemInput";
 import {EditableSpan} from "./EditableSpan/EditableSpan";
-import {Button, ButtonGroup, Checkbox, IconButton, List, ListItem, Typography} from "@material-ui/core";
+import {Button, ButtonGroup,  IconButton, List,  Typography} from "@material-ui/core";
 import {Delete} from "@material-ui/icons";
 import {FilterValuesType} from "./redux/todolists-reducer";
 import {TaskType} from "./redux/tasks-reducer";
+import {TaskItem} from "./TaskItem/TaskItem";
 
 type TodolistType = {
     id:string
@@ -21,46 +22,43 @@ type TodolistType = {
 }
 
 
-function ToDoList(props: TodolistType) {
+const ToDoList = React.memo( function (props: TodolistType) {
+    console.log("todolist")
+    let tasksForRender = props.tasks
+    if (props.filter === "active") {
+        tasksForRender = props.tasks.filter(t => !t.isDone)
+    }
+    if (props.filter === "completed") {
+        tasksForRender = props.tasks.filter(t => t.isDone)
+    }
 
     //мапится массив тасок
-    const tasksJSX = props.tasks.map(t => {
+    const tasksJSX = tasksForRender.map(t => {
+        return(
+        <TaskItem
+            key={t.id}
+            removeTask={props.removeTask}
+            renameTask={props.renameTask}
+            changeTaskStatus={props.changeTaskStatus}
+            task={t}
+            todoListID={props.id}
+        />
+        )})
 
-        //обертка для renameTask
-        const renameTask = (newTitle:string) => {
-            props.renameTask(t.id,props.id,newTitle)
-        }
-
-        return (
-            <ListItem key={t.id}  >
-                <Checkbox
-                    size={"small"}
-                    checked={t.isDone}
-                    onChange={(e)=> props.changeTaskStatus(t.id, e.currentTarget.checked, props.id)}
-                />
-                <EditableSpan
-                    className={t.isDone ? "completed": " "}
-                    renameItem={renameTask}
-                    title={t.title}/>
-
-                <IconButton size={"small"} onClick={() => {props.removeTask(t.id, props.id)}}><Delete/></IconButton>
-            </ListItem>)
-    })
-
-    const onAllClickHandler = () => {props.changeFilter("all",props.id)}
-    const onActiveClickHandler = () => {props.changeFilter("active",props.id)}
-    const onCompletedClickHandler = () => {props.changeFilter("completed",props.id)}
+    const onAllClickHandler = useCallback(() => {props.changeFilter("all",props.id)},[props.changeFilter,props.id])
+    const onActiveClickHandler = useCallback(() => {props.changeFilter("active",props.id)},[props.changeFilter,props.id])
+    const onCompletedClickHandler = useCallback (() => {props.changeFilter("completed",props.id)},[props.changeFilter,props.id])
 
     const buttonStatusClass = (filter:FilterValuesType ) =>  props.filter === filter ? "secondary": "primary" //меняет класс кнопкам в зависимости от фильтрации в аpp.tsx
 
 //обертка для addTask (чтобы не передевать в компоненту AddItemInput ненужынй id)
-    const addTask = (title:string) => {
+    const addTask = useCallback( (title:string) => {
         props.addTask(title,props.id)
-    }
+    },[props.addTask,props.id])
 //обертка для renameTodolist
-    const renameTodoList = (newTitle:string) => {
+    const renameTodoList = useCallback((newTitle:string) => {
         props.renameTodolist(props.id, newTitle)
-    }
+    },[props.renameTodolist,props.id])
 
     return (
         <div  className="App">
@@ -87,7 +85,7 @@ function ToDoList(props: TodolistType) {
             </div>
         </div>
     )
-}
+})
 
 export default ToDoList
 

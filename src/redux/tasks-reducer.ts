@@ -1,6 +1,5 @@
-
 import {v1} from "uuid";
-import {addTodoListAC, removeTodoListAC, todolistID_1, todolistID_2} from "./todolists-reducer";
+import {addTodoListAC, removeTodoListAC} from "./todolists-reducer";
 
 export type ActionTaskReducerType =
     ReturnType<typeof removeTaskAC> |

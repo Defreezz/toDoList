@@ -1,4 +1,4 @@
-import React, {Dispatch} from 'react';
+import React, {Dispatch, useCallback} from 'react';
 import './App.css';
 import ToDoList from "./ToDoList";
 import {AddItemInput} from "./AddItemInput/AddItemInput";
@@ -23,53 +23,49 @@ import {
 import {GlobalStateType} from "./redux/store/store";
 
 
-function App() {
-
+const App  = React.memo(function () {
+    console.log("app")
     const dispatch = useDispatch<Dispatch<ActionsTodoListReducerType | ActionTaskReducerType>>()
     const todoLists = useSelector((state:GlobalStateType)=>state.todoLists)
     const tasks = useSelector((state:GlobalStateType)=>state.tasks)
 
     //ф-ция для изменения чекбокса (выполненная/невыполненная) таска
-    const changeTaskStatus = (taskID: string, isDone: boolean, todolistID: string) => {
+    const changeTaskStatus = useCallback ((taskID: string, isDone: boolean, todolistID: string) => {
         dispatch(changeTaskStatusAC(taskID, isDone, todolistID))
-    }
+    },[dispatch])
     //Фильрация таски
-    const changeFilter = (filter: FilterValuesType, todolistID: string) => {
+    const changeFilter = useCallback((filter: FilterValuesType, todolistID: string) => {
         dispatch(changeFilterTodoListAC(filter, todolistID))
-    }
+    },[dispatch])
     //Добавление таски
-    function addTask(title: string, todolistID: string) {
+    const addTask = useCallback((title: string, todolistID: string) => {
         dispatch(addTaskAC(title, todolistID))
-    }
+    },[dispatch])
     //Переименование таски
-    function renameTask(taskID: string, todolistID: string, newTitle: string) {
+    const renameTask = useCallback((taskID: string, todolistID: string, newTitle: string) => {
         dispatch(changeTaskTitleAC(taskID, todolistID, newTitle))
-    }
+    },[dispatch])
     //Удаление таски
-    const removeTask = (taskID: string, todolistID: string) => {
+    const removeTask = useCallback ((taskID: string, todolistID: string) => {
         dispatch(removeTaskAC(taskID, todolistID))
-    }
+    },[dispatch])
     //Добавление тудулиста
-    function addTodoList(title: string) {
+    const addTodoList = useCallback( function (title: string) {
         dispatch(addTodoListAC(title))
-    }
+    },[dispatch])
     //Удаление тудулиста
-    const removeTodoList = (todolistID: string) => {
+    const removeTodoList = useCallback((todolistID: string) => {
         dispatch(removeTodoListAC(todolistID))
-    }
+    },[dispatch])
     //Переименование Тудулиста
-    function renameTodolist(todolistID: string, newTitle: string) {
+    const renameTodolist = useCallback((todolistID: string, newTitle: string) =>{
         dispatch(renameTodoListAC(todolistID, newTitle))
-    }
+    },[dispatch])
+
     //map для тудулистОВ
     const todoListRender = todoLists.map((tdl) => {
             let tasksForRender = tasks[tdl.id]
-            if (tdl.filter === "active") {
-                tasksForRender = tasks[tdl.id].filter(t => !t.isDone)
-            }
-            if (tdl.filter === "completed") {
-                tasksForRender = tasks[tdl.id].filter(t => t.isDone)
-            }
+
             return (
                 <Grid item key={tdl.id}>
                     <Paper elevation={8} style={{padding: "16px"}}>
@@ -116,7 +112,7 @@ function App() {
                 </Grid>
             </Container>
         </div>
-    );
-}
+    )
+})
 
 export default App;
