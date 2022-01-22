@@ -43,7 +43,8 @@ const ToDoList = React.memo( function (props: TodolistType) {
             task={t}
             todoListID={props.id}
         />
-        )})
+        )}
+    )
 
     const onAllClickHandler = useCallback(() => {props.changeFilter("all",props.id)},[props.changeFilter,props.id])
     const onActiveClickHandler = useCallback(() => {props.changeFilter("active",props.id)},[props.changeFilter,props.id])
