@@ -7,7 +7,9 @@ type EditableSpanType = {
     className?:string
 }
 
-export function EditableSpan({title, className, renameItem}: EditableSpanType) {
+export const EditableSpan = React.memo(
+    function ({title, className, renameItem}: EditableSpanType) {
+        console.log("span span")
     const [editMode,setEditMode] = useState(false)
     const [input, setInput] = useState(" ") // записываем пустую, но сетаем тайтл реальный в колбэке
 
@@ -23,4 +25,4 @@ export function EditableSpan({title, className, renameItem}: EditableSpanType) {
             {title}
         </span>
 
-}
+})

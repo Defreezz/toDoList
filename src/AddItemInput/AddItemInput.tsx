@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import {IconButton, TextField} from "@material-ui/core";
 import {AddBox} from "@material-ui/icons";
 
@@ -6,31 +6,31 @@ type AddItemInputType = {
     addItem: (title:string) => void
 }
 
-export function AddItemInput({addItem}: AddItemInputType) {
-
+export const AddItemInput = React.memo( function ({addItem}: AddItemInputType) {
+    console.log("form")
     const [newTaskTittle, setNewTaskTittle] = useState("")
     const [error, setError] = useState<string>("")
 
    // const errorClass = (error !== '' ? "errorInput" : "defaultInput")
 
-    const addTask = () => {
+    const addTask = useCallback (() => {
         const trimmedTitle = newTaskTittle.trim()
         if (trimmedTitle) {
             addItem(trimmedTitle)
         } else {
             setError("Обязательное поле")
         }
-        setNewTaskTittle("");
-    }
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setNewTaskTittle("")
+    },[addItem,newTaskTittle])
+    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTittle(e.currentTarget.value);
         setError("")
-    }
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    },[])
+    const onKeyPressHandler = useCallback( (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             addTask()
         }
-    }
+    },[addTask])
 
     return (
         <div>
@@ -38,7 +38,6 @@ export function AddItemInput({addItem}: AddItemInputType) {
                 variant={"outlined"}
                 label={"Title"}
                 size={"small"}
-                //className={errorClass}
                 error={!!error}
                 helperText={error}
                 value={newTaskTittle}
@@ -46,8 +45,7 @@ export function AddItemInput({addItem}: AddItemInputType) {
                 onKeyPress={onKeyPressHandler}/>
 
             <IconButton size={"small"} onClick={addTask}><AddBox /></IconButton>
-            {/*<div className={"error"}>{error}</div>*/}
         </div>
-    );
-};
+    )
+})
 
