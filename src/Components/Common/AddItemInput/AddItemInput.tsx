@@ -13,7 +13,7 @@ export const AddItemInput = React.memo( function ({addItem}: AddItemInputType) {
 
    // const errorClass = (error !== '' ? "errorInput" : "defaultInput")
 
-    const addTask = useCallback (() => {
+    const addItemHandler = useCallback (() => {
         const trimmedTitle = newTaskTittle.trim()
         if (trimmedTitle) {
             addItem(trimmedTitle)
@@ -22,15 +22,17 @@ export const AddItemInput = React.memo( function ({addItem}: AddItemInputType) {
         }
         setNewTaskTittle("")
     },[addItem,newTaskTittle])
+
     const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTittle(e.currentTarget.value);
         setError("")
     },[])
+
     const onKeyPressHandler = useCallback( (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
-            addTask()
+            addItemHandler()
         }
-    },[addTask])
+    },[addItemHandler])
 
     return (
         <div>
@@ -44,7 +46,7 @@ export const AddItemInput = React.memo( function ({addItem}: AddItemInputType) {
                 onChange={onChangeHandler}
                 onKeyPress={onKeyPressHandler}/>
 
-            <IconButton size={"small"} onClick={addTask}><AddBox /></IconButton>
+            <IconButton size={"small"} onClick={addItemHandler}><AddBox /></IconButton>
         </div>
     )
 })

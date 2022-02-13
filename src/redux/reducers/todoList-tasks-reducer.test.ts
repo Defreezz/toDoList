@@ -1,6 +1,6 @@
-import {tasksReducer, TaskStateType} from './tasks-reducer';
+import {tasksReducer, TaskStateType} from './task-reducer/tasks-reducer';
 
-import {addTodoListAC, removeTodoListAC, todoListsReducer, TodoListType} from "./todolists-reducer";
+import {addTodoListAC, removeTodoListAC, todoListsReducer, TodoListType} from "./todolist-reducer/todolists-reducer";
 
 test('ids should be equals', () => {
     const startTasksState: TaskStateType = {};
@@ -13,24 +13,24 @@ test('ids should be equals', () => {
 
     const keys = Object.keys(endTasksState);
     const idFromTasks = keys[0];
-    const idFromTodolists = endTodolistsState[0].id;
+    const idFromTodolists = endTodolistsState[0].todolistID;
 
-    expect(idFromTasks).toBe(action.payload.todolistId);
-    expect(idFromTodolists).toBe(action.payload.todolistId);
+    expect(idFromTasks).toBe(action.payload.todolistID);
+    expect(idFromTodolists).toBe(action.payload.todolistID);
 });
 
 
 test('property with todolistId should be deleted', () => {
     const startState: TaskStateType = {
         "todolistId1": [
-            { id: "1", title: "CSS", isDone: false },
-            { id: "2", title: "JS", isDone: true },
-            { id: "3", title: "React", isDone: false }
+            { taskID: "1", title: "CSS", isDone: false },
+            { taskID: "2", title: "JS", isDone: true },
+            { taskID: "3", title: "React", isDone: false }
         ],
         "todolistId2": [
-            { id: "1", title: "bread", isDone: false },
-            { id: "2", title: "milk", isDone: true },
-            { id: "3", title: "tea", isDone: false }
+            { taskID: "1", title: "bread", isDone: false },
+            { taskID: "2", title: "milk", isDone: true },
+            { taskID: "3", title: "tea", isDone: false }
         ]
     };
 

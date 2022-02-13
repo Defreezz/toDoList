@@ -1,15 +1,16 @@
 import React, {ChangeEvent, useCallback} from "react";
 import {Checkbox, IconButton, ListItem} from "@material-ui/core";
-import {EditableSpan} from "../EditableSpan/EditableSpan";
+import {EditableSpan} from "../Common/EditableSpan/EditableSpan";
 import {Delete} from "@material-ui/icons";
-import {TaskType} from "../redux/tasks-reducer";
+import {TaskStatuses, TaskType} from "../../api/api";
+
 
 type TaskItemType = {
     todoListID:string
     task:TaskType
-    removeTask: (taskID: string, todolistID: string) => void
+    removeTask: (todolistID: string,taskID: string) => void
     renameTask: (taskID: string, todolistID: string, newTitle: string) => void
-    changeTaskStatus: (taskID: string, isDone: boolean, todolistID: string) => void
+    changeTaskStatus: (todolistID: string,taskID: string, status: TaskStatuses,title:string) => void
 }
 
 export const TaskItem = React.memo (({
@@ -24,12 +25,16 @@ export const TaskItem = React.memo (({
         renameTask(task.id, todoListID, newTitle)
     },[task.id, todoListID,renameTask])
 
-    const onChangeHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
-        changeTaskStatus(task.id, e.currentTarget.checked, todoListID)
+    const onChangeStatusHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
+        const isDoneValue = e.currentTarget.checked
+        changeTaskStatus(
+            todoListID,task.id, isDoneValue?TaskStatuses.Completed:TaskStatuses.New,task.title
+            )
+
     },[task.id, todoListID,changeTaskStatus])
 
     const removeTaskHandler = useCallback (() => {
-        removeTask(task.id, todoListID)
+        removeTask(todoListID,task.id )
     },[task.id, todoListID,removeTask])
 
 
@@ -37,11 +42,11 @@ export const TaskItem = React.memo (({
         <ListItem key={task.id}>
             <Checkbox
                 size={"small"}
-                checked={task.isDone}
-                onChange={onChangeHandler}
+                checked={!!task.status}
+                onChange={onChangeStatusHandler}
             />
             <EditableSpan
-                className={task.isDone ? "completed" : " "}
+                //className={task.isDone ? "completed" : ""} //вызывает перерисовку в React.memo
                 renameItem={renameTaskHandler}
                 title={task.title}/>
 
