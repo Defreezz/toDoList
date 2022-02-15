@@ -3,12 +3,6 @@ import {ThunkType} from "../../store/store";
 import {TodolistReducerActionType} from "./todolist-actions-types";
 import {addTodoListAC, removeTodoListAC, renameTodoListAC, setTodolists} from "./todolist-actions";
 
-export type SetTodolistsActionType = {
-    type: 'SET-TODOLISTS'
-    todolists: Array<TodolistType>
-}
-
-
 export type FilterValuesType = "all" | "active" | "completed"
 
 export type TodolistDomainType = TodolistType & {

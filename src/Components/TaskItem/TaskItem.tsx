@@ -1,8 +1,8 @@
 import React, {ChangeEvent, useCallback} from "react";
-import {Checkbox, IconButton, ListItem} from "@material-ui/core";
 import {EditableSpan} from "../Common/EditableSpan/EditableSpan";
-import {Delete} from "@material-ui/icons";
 import {TaskStatuses, TaskType} from "../../api/api";
+import {Checkbox, IconButton, ListItem} from "@mui/material";
+import {Delete} from "@mui/icons-material";
 
 
 type TaskItemType = {
@@ -40,16 +40,16 @@ export const TaskItem = React.memo (({
 
     return (
         <ListItem key={task.id}>
+            <div>
             <Checkbox
                 size={"small"}
                 checked={!!task.status}
                 onChange={onChangeStatusHandler}
             />
             <EditableSpan
-                //className={task.isDone ? "completed" : ""} //вызывает перерисовку в React.memo
                 renameItem={renameTaskHandler}
                 title={task.title}/>
-
+            </div>
             <IconButton size={"small"} onClick={removeTaskHandler}><Delete/></IconButton>
         </ListItem>)
 }
