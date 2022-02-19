@@ -1,8 +1,11 @@
-import {AllActionsType, ThunkType} from "../../store/store";
+import {ThunkType} from "../../store/store";
 import {taskAPI, TaskStatuses, TaskType} from "../../../api/api";
 import {addTaskAC, removeTaskAC, setTasks, updateTaskAC} from "./task-actions";
 import {TaskReducerActionsTypes} from "./tasks-actions-types";
 import {TodolistReducerActionsTypes} from "../todolist-reducer/todolist-actions-types";
+import {setOperationStatus, setUiError} from "../ui-reducer/ui-actions";
+import {resultCodes} from "../../../utils/resultCodes/resultCodes";
+import {handleServerAppError, handleServerNetworkError} from "../../../utils/error-util/error-utils";
 
 
 export type TaskStateType = {
@@ -29,7 +32,7 @@ export function tasksReducer(tasks: TaskStateType = {}, action: TaskReducerActio
                 [action.todolistID]: tasks[action.todolistID].filter(task => task.id !== action.taskID)
             }
         case "ADD-TASK":
-            let newTask: TaskType = {...action.task,title: action.title, status: TaskStatuses.New}
+            let newTask: TaskType = {...action.task, title: action.title, status: TaskStatuses.New}
             return {
                 ...tasks,
                 [action.todolistID]: [newTask, ...tasks[action.todolistID]]
@@ -41,17 +44,7 @@ export function tasksReducer(tasks: TaskStateType = {}, action: TaskReducerActio
                     task => task.id === action.updateTask.id ? action.updateTask : task
                 )
             }
-        // case "CHANGE-TASK-TITLE":
-        //     return {
-        //         ...tasks,
-        //         [action.todolistID]: tasks[action.todolistID].map(
-        //             task => task.id === action.taskID ? {...task, title: action.title} : task
-        //         )
-        //     }
 
-        //actionЫ todoList-reducer(при добавлениии/удалении тудулиста
-        // добавляет пустой массив тасок/удаляет массив тасок
-        // ключ(id) создается в ActionCreator todoList-reducer
         case "ADD-TODOLIST"://заюзан ActionCreator из редьюсера тудулиста, для добавления пустого массива тасок
             return {
                 ...tasks,
@@ -74,33 +67,40 @@ export const getTasks = (todolistID: string): ThunkType => async dispatch => {
     }
 }
 export const addTask = (todolistID: string, title: string): ThunkType => async dispatch => {
-    const response = await taskAPI.addTask(todolistID, title)
-    if (response.data.resultCode === 0) {
-        //dispatch(getTasks(todolistID))
-        dispatch(addTaskAC(todolistID, response.data.data.item, title))
+    try {
+        dispatch(setOperationStatus("loading"))
+        const response = await taskAPI.addTask(todolistID, title)
+        if (response.resultCode === resultCodes.success) {
+            //dispatch(getTasks(todolistID))
+            dispatch(addTaskAC(todolistID, response.data.item, title))
+            dispatch(setOperationStatus("succeeded"))
+        } else {
+            handleServerAppError<{ item: TaskType }>(dispatch,response)
+        }
     }
+    catch (e:any){
+        handleServerNetworkError(dispatch,e.message)
+    }
+
 }
 export const removeTask = (todolistID: string, taskID: string): ThunkType => async dispatch => {
+    dispatch(setOperationStatus("loading"))
     const response = await taskAPI.removeTask(todolistID, taskID)
-    if (response.data.resultCode === 0) {
+    if (response.data.resultCode === resultCodes.success) {
         //dispatch(getTasks(todolistID))
         dispatch(removeTaskAC(todolistID, taskID))
+        dispatch(setOperationStatus("succeeded"))
     }
 }
-// export const renameTask = (todolistID: string, taskID: string, title: string): ThunkType => async dispatch => {
-//     const response = await taskAPI.renameTask(todolistID, taskID, title)
-//     if (response.data.resultCode === 0) {
-//         //dispatch(getTasks(todolistID))
-//         dispatch(renameTaskAC(todolistID, taskID, title))
-//     }
-// }
-export const updateTask = (todolistID: string, taskID: string, change:Partial<TaskType>): ThunkType =>
+export const updateTask = (todolistID: string, taskID: string, change: Partial<TaskType>): ThunkType =>
     async (dispatch, getState) => {
-    const currentTask = getState().tasks[todolistID].find(t => t.id === taskID) as TaskType
+        dispatch(setOperationStatus("loading"))
+        const currentTask = getState().tasks[todolistID].find(t => t.id === taskID) as TaskType
 
-        const response = await taskAPI.updateTask(todolistID, taskID, {...currentTask,...change})
-        if (response.data.resultCode === 0) {
+        const response = await taskAPI.updateTask(todolistID, taskID, {...currentTask, ...change})
+        if (response.data.resultCode === resultCodes.success) {
             //dispatch(getTasks(todolistID))
-            dispatch(updateTaskAC({...currentTask,...change}))
+            dispatch(updateTaskAC({...currentTask, ...change}))
+            dispatch(setOperationStatus("succeeded"))
         }
     }

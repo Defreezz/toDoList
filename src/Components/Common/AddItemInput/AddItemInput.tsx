@@ -1,20 +1,20 @@
 import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import {IconButton, TextField} from "@mui/material";
 import {AddBox} from "@mui/icons-material";
+import {RequestStatusType} from "../../../redux/reducers/ui-reducer/ui-reducer";
 
 
 type AddItemInputType = {
-    addItem: (title:string) => void
+    addItem: (title: string) => void
+    entityStatus?: RequestStatusType
 }
 
-export const AddItemInput = React.memo( function ({addItem}: AddItemInputType) {
+export const AddItemInput = React.memo(function ({addItem, entityStatus}: AddItemInputType) {
     console.log("form")
     const [newTaskTittle, setNewTaskTittle] = useState("")
     const [error, setError] = useState<string>("")
 
-   // const errorClass = (error !== '' ? "errorInput" : "defaultInput")
-
-    const addItemHandler = useCallback (() => {
+    const addItemHandler = useCallback(() => {
         const trimmedTitle = newTaskTittle.trim()
         if (trimmedTitle) {
             addItem(trimmedTitle)
@@ -22,22 +22,23 @@ export const AddItemInput = React.memo( function ({addItem}: AddItemInputType) {
             setError("Обязательное поле")
         }
         setNewTaskTittle("")
-    },[addItem,newTaskTittle])
+    }, [addItem, newTaskTittle])
 
     const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTittle(e.currentTarget.value);
         setError("")
-    },[])
+    }, [])
 
-    const onKeyPressHandler = useCallback( (e: KeyboardEvent<HTMLInputElement>) => {
+    const onKeyPressHandler = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             addItemHandler()
         }
-    },[addItemHandler])
+    }, [addItemHandler])
 
     return (
         <div>
             <TextField
+                disabled={entityStatus === "loading"}
                 variant={"outlined"}
                 label={"Title"}
                 size={"small"}
@@ -47,7 +48,13 @@ export const AddItemInput = React.memo( function ({addItem}: AddItemInputType) {
                 onChange={onChangeHandler}
                 onKeyPress={onKeyPressHandler}/>
 
-            <IconButton size={"small"} onClick={addItemHandler}><AddBox /></IconButton>
+            <IconButton
+                disabled={entityStatus === "loading"}
+                size={"small"}
+                onClick={addItemHandler}
+            >
+                <AddBox/>
+            </IconButton>
         </div>
     )
 })

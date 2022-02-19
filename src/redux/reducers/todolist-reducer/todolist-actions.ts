@@ -1,5 +1,6 @@
 import {TodolistType} from "../../../api/api";
 import {FilterValuesType} from "./todolists-reducer";
+import {RequestStatusType} from "../ui-reducer/ui-reducer";
 
 export const setTodolists = (todolists: Array<TodolistType>) => {
     return {type: "SET-TODOLISTS", todolists} as const
@@ -15,4 +16,7 @@ export const renameTodoListAC = (id: string, title: string) => {
 }
 export const changeFilterTodoListAC = (filter: FilterValuesType, id: string) => {
     return {type: "CHANGE-TODOLIST-FILTER", payload: {id, filter}} as const
+}
+export const changeTodolistEntityStatusAC = (id: string,entityStatus:RequestStatusType) => {
+    return {type: "CHANGE-TODOLIST-ENTITY-STATUS", payload: {id, entityStatus}} as const
 }

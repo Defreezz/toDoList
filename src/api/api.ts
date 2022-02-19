@@ -51,7 +51,7 @@ export type UpdateTaskModelType = {
     startDate: string
     deadline: string
 }
-type CommonResponseType<T> = {
+export type CommonResponseType<T> = {
     data: T
     fieldsErrors: Array<string>
     messages: Array<string>
@@ -84,8 +84,8 @@ export const taskAPI = {
 
     },
     async addTask(todolistID: string, title: string) {
-        return await instance.post<CommonResponseType<{ item: TaskType }>>(`/todo-lists/${todolistID}/tasks`,{title})
-
+        const response = await instance.post<CommonResponseType<{ item: TaskType }>>(`/todo-lists/${todolistID}/tasks`,{title})
+        return response.data
     },
     async removeTask(todolistID: string, taskID:string) {
         return await instance.delete<CommonResponseType<{ }>>(`/todo-lists/${todolistID}/tasks/${taskID}`)

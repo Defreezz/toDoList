@@ -13,9 +13,18 @@ export const lightTheme = createTheme({
     components:{
         MuiContainer:{
             defaultProps:{
-               maxWidth:false,
+                maxWidth:false,
 
             },
+        },
+        MuiPaper:{
+            styleOverrides:{
+                elevation8:{
+                    position:"relative",
+                    minHeight:"500px",
+                    padding:"18px",
+                }
+            }
         },
         MuiListItem:{
             defaultProps:{
@@ -46,10 +55,20 @@ export const darkTheme = createTheme({
         },
     },
     components:{
+
         MuiContainer:{
             defaultProps:{
                 maxWidth:false,
             },
+        },
+        MuiPaper:{
+            styleOverrides:{
+                elevation8:{
+                    position:"relative",
+                    minHeight:"500px",
+                    padding:"18px",
+                }
+            }
         },
         MuiListItem:{
             defaultProps:{

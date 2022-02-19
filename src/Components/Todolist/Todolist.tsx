@@ -9,26 +9,29 @@ import {useDispatch} from "react-redux";
 import {ThunkType} from "../../redux/store/store";
 import {Delete} from "@mui/icons-material";
 import {Button, ButtonGroup, IconButton, List, Paper, Typography} from "@mui/material";
+import {RequestStatusType} from "../../redux/reducers/ui-reducer/ui-reducer";
 
 type TodolistType = {
     todolistID: string
+    entityStatus: RequestStatusType
     title: string
     tasks: Array<TaskType>
     removeTodolist: (todoListID: string) => void
     renameTodolist: (todoListID: string, newTitle: string) => void
     changeTaskFilter: (filter: FilterValuesType, todolistID: string) => void
-    filterTDL: FilterValuesType
+    filterTdl: FilterValuesType
 }
 
 
 const Todolist = React.memo(function ({
                                           todolistID,
+                                          entityStatus,
                                           title,
                                           tasks,
                                           removeTodolist,
                                           renameTodolist,
                                           changeTaskFilter,
-                                          filterTDL,
+                                          filterTdl,
                                       }: TodolistType) {
     console.log("todolist")
     //const dispatch = useDispatch<Dispatch<AllActionsType>>()
@@ -56,10 +59,10 @@ const Todolist = React.memo(function ({
     }, [renameTodolist, todolistID])
 
     let tasksForRender = tasks
-    if (filterTDL === "active") {
+    if (filterTdl === "active") {
         tasksForRender = tasks.filter(t => t.status === TaskStatuses.New)
     }
-    if (filterTDL === "completed") {
+    if (filterTdl === "completed") {
         tasksForRender = tasks.filter(t => t.status === TaskStatuses.Completed)
     }
 
@@ -98,22 +101,27 @@ const Todolist = React.memo(function ({
         [changeTaskFilter, todolistID])
 
     const buttonStatusClass = (filter: FilterValuesType) =>
-        filterTDL === filter ? "secondary" : "primary" //меняет класс кнопкам в зависимости от фильтрации в аpp.tsx
+        filter === filterTdl ? "secondary" : "primary" //меняет класс кнопкам в зависимости от фильтрации в аpp.tsx
 
 
     return (
-        <div className="App">
             <div>
-                <Typography >
+                <Typography>
                     <EditableSpan title={title} renameItem={renameTodoList}/>
-                    <IconButton size={"small"} onClick={() => {
+                    <IconButton
+                        disabled={entityStatus === "loading"}
+                        size={"small"}
+                        onClick={() => {
                         removeTodolist(todolistID)
                     }}>
                         <Delete/>
                     </IconButton>
                 </Typography>
                 <div>
-                    <AddItemInput addItem={addTaskHandler}/>
+                    <AddItemInput
+                        addItem={addTaskHandler}
+                        entityStatus={entityStatus}
+                    />
                 </div>
                 <List>
                     {tasksJSX}
@@ -127,7 +135,6 @@ const Todolist = React.memo(function ({
                     </ButtonGroup>
                 </div>
             </div>
-        </div>
     )
 })
 
