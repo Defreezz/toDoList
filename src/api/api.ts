@@ -43,12 +43,13 @@ export type TaskType = {
     addedDate?: string
 }
 export type UpdateTaskModelType = {
+
     title:string
-    description?:string
+    description:string
     status:TaskStatuses
-    priority?:TaskPriorities
-    startDate?: string
-    deadline?: string
+    priority:TaskPriorities
+    startDate: string
+    deadline: string
 }
 type CommonResponseType<T> = {
     data: T
@@ -92,7 +93,7 @@ export const taskAPI = {
     async renameTask(todolistID: string, taskID:string,title:string) {
         return await instance.put<CommonResponseType<{items:TaskType}>>(`/todo-lists/${todolistID}/tasks/${taskID}`,{title})
     },
-    async updateTask(todolistID: string, taskID:string,model:UpdateTaskModelType,) {
+    async updateTask(todolistID: string, taskID:string,model:Partial<UpdateTaskModelType>) {
         return await instance.put<CommonResponseType<{items:TaskType}>>(`/todo-lists/${todolistID}/tasks/${taskID}`,model)
     },
 }

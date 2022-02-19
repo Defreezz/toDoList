@@ -1,13 +1,15 @@
-import {AllActionsType, GlobalStateType, ThunkType} from "../../store/store";
-import {taskAPI, TaskStatuses, TaskType, UpdateTaskModelType} from "../../../api/api";
-import {addTaskAC, changeTaskStatusAC, removeTaskAC, renameTaskAC, setTasks} from "./task-actions";
+import {AllActionsType, ThunkType} from "../../store/store";
+import {taskAPI, TaskStatuses, TaskType} from "../../../api/api";
+import {addTaskAC, removeTaskAC, setTasks, updateTaskAC} from "./task-actions";
+import {TaskReducerActionsTypes} from "./tasks-actions-types";
+import {TodolistReducerActionsTypes} from "../todolist-reducer/todolist-actions-types";
 
 
 export type TaskStateType = {
     [key: string]: TaskType[]
 }
 
-export function tasksReducer(tasks: TaskStateType = {}, action: AllActionsType): TaskStateType {
+export function tasksReducer(tasks: TaskStateType = {}, action: TaskReducerActionsTypes | TodolistReducerActionsTypes): TaskStateType {
     switch (action.type) {
         case 'SET-TODOLISTS': {
             const tasksCopy = {...tasks}
@@ -27,25 +29,25 @@ export function tasksReducer(tasks: TaskStateType = {}, action: AllActionsType):
                 [action.todolistID]: tasks[action.todolistID].filter(task => task.id !== action.taskID)
             }
         case "ADD-TASK":
-            let newTask: TaskType = {id: action.taskID, title: action.title, status: TaskStatuses.New}
+            let newTask: TaskType = {...action.task,title: action.title, status: TaskStatuses.New}
             return {
                 ...tasks,
                 [action.todolistID]: [newTask, ...tasks[action.todolistID]]
             }
-        case "CHANGE-TASK-STATUS":
+        case "UPDATE-TASK":
             return {
                 ...tasks,
-                [action.todolistID]: tasks[action.todolistID].map(
-                    task => task.id === action.taskID ? {...task, status: action.status} : task
+                [action.updateTask.todoListId!]: tasks[action.updateTask.todoListId!].map(
+                    task => task.id === action.updateTask.id ? action.updateTask : task
                 )
             }
-        case "CHANGE-TASK-TITLE":
-            return {
-                ...tasks,
-                [action.todolistID]: tasks[action.todolistID].map(
-                    task => task.id === action.taskID ? {...task, title: action.title} : task
-                )
-            }
+        // case "CHANGE-TASK-TITLE":
+        //     return {
+        //         ...tasks,
+        //         [action.todolistID]: tasks[action.todolistID].map(
+        //             task => task.id === action.taskID ? {...task, title: action.title} : task
+        //         )
+        //     }
 
         //actionЫ todoList-reducer(при добавлениии/удалении тудулиста
         // добавляет пустой массив тасок/удаляет массив тасок
@@ -75,7 +77,7 @@ export const addTask = (todolistID: string, title: string): ThunkType => async d
     const response = await taskAPI.addTask(todolistID, title)
     if (response.data.resultCode === 0) {
         //dispatch(getTasks(todolistID))
-        dispatch(addTaskAC(todolistID, response.data.data.item.id, title))
+        dispatch(addTaskAC(todolistID, response.data.data.item, title))
     }
 }
 export const removeTask = (todolistID: string, taskID: string): ThunkType => async dispatch => {
@@ -85,24 +87,20 @@ export const removeTask = (todolistID: string, taskID: string): ThunkType => asy
         dispatch(removeTaskAC(todolistID, taskID))
     }
 }
-export const renameTask = (todolistID: string, taskID: string, title: string): ThunkType => async dispatch => {
-    const response = await taskAPI.renameTask(todolistID, taskID, title)
-    if (response.data.resultCode === 0) {
-        //dispatch(getTasks(todolistID))
-        dispatch(renameTaskAC(todolistID, taskID, title))
-    }
-}
-export const updateTask = (todolistID: string, taskID: string, status: TaskStatuses): ThunkType => async (dispatch, getState) => {
-    const currentTask = getState().tasks[todolistID].find(t => t.id === taskID)
-    if (currentTask) {
-        const model: UpdateTaskModelType = {
-            title: currentTask.title,
-            status: status,
-        }
-        const response = await taskAPI.updateTask(todolistID, taskID, model)
+// export const renameTask = (todolistID: string, taskID: string, title: string): ThunkType => async dispatch => {
+//     const response = await taskAPI.renameTask(todolistID, taskID, title)
+//     if (response.data.resultCode === 0) {
+//         //dispatch(getTasks(todolistID))
+//         dispatch(renameTaskAC(todolistID, taskID, title))
+//     }
+// }
+export const updateTask = (todolistID: string, taskID: string, change:Partial<TaskType>): ThunkType =>
+    async (dispatch, getState) => {
+    const currentTask = getState().tasks[todolistID].find(t => t.id === taskID) as TaskType
+
+        const response = await taskAPI.updateTask(todolistID, taskID, {...currentTask,...change})
         if (response.data.resultCode === 0) {
             //dispatch(getTasks(todolistID))
-            dispatch(changeTaskStatusAC(todolistID, taskID, status))
+            dispatch(updateTaskAC({...currentTask,...change}))
         }
     }
-}

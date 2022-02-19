@@ -4,7 +4,7 @@ import {EditableSpan} from "../Common/EditableSpan/EditableSpan";
 import {FilterValuesType} from "../../redux/reducers/todolist-reducer/todolists-reducer";
 import {TaskItem} from "../TaskItem/TaskItem";
 import {TaskStatuses, TaskType} from "../../api/api";
-import {addTask, getTasks, removeTask, renameTask, updateTask} from "../../redux/reducers/task-reducer/tasks-reducer";
+import {addTask, getTasks, removeTask, updateTask} from "../../redux/reducers/task-reducer/tasks-reducer";
 import {useDispatch} from "react-redux";
 import {ThunkType} from "../../redux/store/store";
 import {Delete} from "@mui/icons-material";
@@ -42,12 +42,12 @@ const Todolist = React.memo(function ({
         dispatchThunk(addTask(todolistID, title))
     }, [dispatchThunk, todolistID])
 
-    const renameTaskHandler = useCallback((taskID: string, todolistID: string, newTitle: string) => {
-        dispatchThunk(renameTask(todolistID, taskID, newTitle))
+    const renameTaskHandler = useCallback((taskID: string, todolistID: string, title: string) => {
+        dispatchThunk(updateTask(todolistID, taskID, {title}))
     }, [dispatchThunk])
 
     const changeTaskStatusHandler = useCallback((todolistID: string, taskID: string, status: TaskStatuses) => {
-        dispatchThunk(updateTask(todolistID, taskID, status))
+        dispatchThunk(updateTask(todolistID, taskID, {status}))
     }, [dispatchThunk])
 
 
@@ -70,7 +70,7 @@ const Todolist = React.memo(function ({
     //мапится массив тасок
     const tasksJSX = tasksForRender.map(t => {
             return (
-                <Paper style={{margin: "5px 5px"}}>
+                <Paper key={t.id} style={{margin: "5px 5px"}}>
                     <TaskItem
                         key={t.id}
                         removeTask={removeTaskHandler}
@@ -104,7 +104,7 @@ const Todolist = React.memo(function ({
     return (
         <div className="App">
             <div>
-                <Typography align={"center"} variant={"h6"} style={{fontWeight: "bold"}}>
+                <Typography >
                     <EditableSpan title={title} renameItem={renameTodoList}/>
                     <IconButton size={"small"} onClick={() => {
                         removeTodolist(todolistID)

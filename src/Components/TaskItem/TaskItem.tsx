@@ -10,7 +10,7 @@ type TaskItemType = {
     task:TaskType
     removeTask: (todolistID: string,taskID: string) => void
     renameTask: (taskID: string, todolistID: string, newTitle: string) => void
-    changeTaskStatus: (todolistID: string,taskID: string, status: TaskStatuses,title:string) => void
+    changeTaskStatus: (todolistID: string,taskID: string, status: TaskStatuses) => void
 }
 
 export const TaskItem = React.memo (({
@@ -28,8 +28,7 @@ export const TaskItem = React.memo (({
     const onChangeStatusHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
         const isDoneValue = e.currentTarget.checked
         changeTaskStatus(
-            todoListID,task.id, isDoneValue?TaskStatuses.Completed:TaskStatuses.New,task.title
-            )
+            todoListID,task.id, isDoneValue?TaskStatuses.Completed:TaskStatuses.New)
 
     },[task.id, todoListID,changeTaskStatus])
 

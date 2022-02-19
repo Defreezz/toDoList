@@ -1,7 +1,9 @@
 import {todolistAPI, TodolistType} from "../../../api/api";
 import {ThunkType} from "../../store/store";
-import {TodolistReducerActionType} from "./todolist-actions-types";
+import {TodolistReducerActionsTypes} from "./todolist-actions-types";
 import {addTodoListAC, removeTodoListAC, renameTodoListAC, setTodolists} from "./todolist-actions";
+import {setOperationStatus, setStatusApp, setStatusProgress} from "../ui-reducer/ui-actions";
+
 
 export type FilterValuesType = "all" | "active" | "completed"
 
@@ -10,7 +12,7 @@ export type TodolistDomainType = TodolistType & {
 }
 
 
-export function todoListsReducer(todoLists: TodolistDomainType[] = [], action: TodolistReducerActionType): TodolistDomainType[] {
+export function todoListsReducer(todoLists: TodolistDomainType[] = [], action: TodolistReducerActionsTypes): TodolistDomainType[] {
     switch (action.type) {
         case 'SET-TODOLISTS':
             return action.todolists.map(tl => ({...tl, filter: 'all'}))
@@ -18,10 +20,11 @@ export function todoListsReducer(todoLists: TodolistDomainType[] = [], action: T
             return [...todoLists.filter(t => t.id !== action.id)]
         case "ADD-TODOLIST":
             return [{
-                    ...action.payload,
-                    addedDate: "",
-                    order: 0,
-                    filter: "all"},
+                ...action.payload,
+                addedDate: "",
+                order: 0,
+                filter: "all"
+            },
                 ...todoLists,]
         case "CHANGE-TODOLIST-TITLE":
             return [...todoLists.map(t => t.id === action.payload.id ? {
@@ -40,27 +43,50 @@ export function todoListsReducer(todoLists: TodolistDomainType[] = [], action: T
 
 //Thunk
 export const getTodolists = (): ThunkType => async dispatch => {
-    const response = await todolistAPI.getTodolists()
-    dispatch(setTodolists(response))
+    try {
+        dispatch(setStatusApp("loading"))
+        let progress = 0
+        const timer = setInterval(() => {
+            if (progress < 100) {
+                progress += 10
+                dispatch(setStatusProgress(progress))
+            } else {
+                clearInterval(timer)
+                dispatch(setStatusApp("succeeded"))
+            }
+        }, 100)
+        const response = await todolistAPI.getTodolists()
+        dispatch(setTodolists(response))
+    }
+    catch (e){
+        console.log(e)
+    }
+
 }
 export const CreateTodolist = (title: string): ThunkType => async dispatch => {
+    dispatch(setOperationStatus("loading"))
     const response = await todolistAPI.createTodolist(title)
     if (response.resultCode === 0) {
         //dispatch(getTodolists())}
-        dispatch(addTodoListAC(title,response.data.item.id))
+        dispatch(addTodoListAC(title, response.data.item.id))
+        dispatch(setOperationStatus("succeeded"))
     }
 }
 export const removeTodolist = (todolistID: string): ThunkType => async dispatch => {
+    dispatch(setOperationStatus("loading"))
     const response = await todolistAPI.removeTodolist(todolistID)
     if (response.resultCode === 0) {
         //dispatch(getTodolists())
         dispatch(removeTodoListAC(todolistID))
+        dispatch(setOperationStatus("succeeded"))
     }
 }
 export const renameTodolist = (todolistID: string, title: string): ThunkType => async dispatch => {
+    dispatch(setOperationStatus("loading"))
     const response = await todolistAPI.renameTodolist(todolistID, title)
     if (response.resultCode === 0) {
         //dispatch(getTodolists())
-        dispatch(renameTodoListAC(todolistID,title))
+        dispatch(renameTodoListAC(todolistID, title))
+        dispatch(setOperationStatus("succeeded"))
     }
 }

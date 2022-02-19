@@ -18,17 +18,18 @@ import {
     Button,
     Container,
     Grid,
-    IconButton,
+    IconButton, LinearProgress,
     Paper,
     ThemeProvider,
     Toolbar,
     Typography
 } from "@mui/material";
-import {Menu} from "@mui/icons-material";
+import Menu from "@mui/icons-material/Menu";
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import {toggleTheme} from "./redux/reducers/theme-reducer/theme-reducer";
 import {darkTheme, lightTheme} from "./themes/themes";
+import {CircularProgressWithLabel} from "./Components/Common/CircularProgress/CircularProgress";
 
 
 const App = React.memo(function () {
@@ -40,6 +41,9 @@ const App = React.memo(function () {
     const todoLists = useSelector((state: GlobalStateType) => state.todoLists)
     const tasks = useSelector((state: GlobalStateType) => state.tasks)
     const theme = useSelector((state: GlobalStateType) => state.theme.darkTheme)
+    const initializeStatus = useSelector((state:GlobalStateType)=>state.ui.initializeStatus)
+    const progress = useSelector((state:GlobalStateType)=>state.ui.progress)
+     const operationStatus = useSelector((state:GlobalStateType)=>state.ui.operationStatus)
 
     const toggleThemeHandler = () => {
         dispatch(toggleTheme(!theme))
@@ -70,6 +74,7 @@ const App = React.memo(function () {
     useEffect(() => {
         dispatchThunk(getTodolists())
     }, [dispatchThunk])
+
     //
     //
     //map для тудулистОВ
@@ -77,7 +82,7 @@ const App = React.memo(function () {
             let tasksForRender = tasks[tdl.id]
             return (
                 <Grid item key={tdl.id}>
-                    <Paper elevation={8} style={{padding: "16px"}} sx={{position:"relative",minHeight:"340px"}}>
+                    <Paper elevation={8} style={{padding: "16px"}} sx={{position: "relative", minHeight: "340px"}}>
                         <Todolist
                             key={tdl.id}
                             todolistID={tdl.id}
@@ -95,39 +100,44 @@ const App = React.memo(function () {
 
     //UI
     return (
+
         <ThemeProvider theme={theme ? darkTheme : lightTheme}>
             <div className={"App"}>
                 <AppBar position={"static"}>
-                    <Toolbar sx={{ justifyContent: 'space-between' }}>
+                    <Toolbar sx={{justifyContent: 'space-between'}}>
                         <Box>
-                        <IconButton>
-                            <Menu/>
-                        </IconButton>
-                        <IconButton
-                            onClick={toggleThemeHandler}
-                            color="inherit"
-                        >
-                            {theme ? (
-                                <Brightness7Icon/>
-                            ) : (
-                                <Brightness4Icon/>
-                            )}
-                        </IconButton>
+                            <IconButton>
+                                <Menu/>
+                            </IconButton>
+                            <IconButton
+                                onClick={toggleThemeHandler}
+                                color="inherit"
+                            >
+                                {theme ? (
+                                    <Brightness7Icon/>
+                                ) : (
+                                    <Brightness4Icon/>
+                                )}
+                            </IconButton>
                         </Box>
                         <Typography>
                             TodoLists
                         </Typography>
                         <Button color={"secondary"}>Login</Button>
                     </Toolbar>
+                    {operationStatus === 'loading' && <LinearProgress/>}
                 </AppBar>
-                <Container style={{height:"100%"}} >
+                {initializeStatus === 'loading' && <CircularProgressWithLabel value={progress}/>}
+                {initializeStatus === 'succeeded' &&
+                    <Container style={{height: "100%"}}>
                     <Grid container style={{padding: "20px 0 20px 0"}}>
                         <AddItemInput addItem={addTodoListHandler}/>
                     </Grid>
-                    <Grid container spacing={2}  >
+                    <Grid container spacing={2}>
                         {todoListRender}
                     </Grid>
                 </Container>
+                }
             </div>
         </ThemeProvider>
     )

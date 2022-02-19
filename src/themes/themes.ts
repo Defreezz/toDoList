@@ -24,6 +24,14 @@ export const lightTheme = createTheme({
                 }
             }
         },
+        MuiTypography:{
+            defaultProps:{
+                display:"flex",
+                justifyContent:"space-between",
+                fontWeight:"bold",
+                variant:"h6",
+            }
+        },
     },
 });
 
@@ -48,6 +56,14 @@ export const darkTheme = createTheme({
                 sx:{
                     justifyContent:"space-between",
                 }
+            }
+        },
+        MuiTypography:{
+            defaultProps:{
+                display:"flex",
+                justifyContent:"space-between",
+                fontWeight:"bold",
+                variant:"h6",
             }
         },
     },
