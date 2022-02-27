@@ -6,9 +6,9 @@ import {useSelector} from "react-redux";
 import {GlobalStateType} from "../../../redux/store/store";
 
 export function CircularProgressWithLabel(props: CircularProgressProps & { value: number }) {
-    const theme = useSelector((state: GlobalStateType) => state.theme.darkTheme)
+    const isDarkTheme = useSelector((state: GlobalStateType) => state.theme.isDarkTheme)
     return (
-        <Box style={{minHeight: "100vh", backgroundColor: theme ? "#484e50" : "rgba(96,151,225,0.37)"}}
+        <Box style={{minHeight: "100vh", backgroundColor: isDarkTheme ? "#484e50" : "rgba(96,151,225,0.37)"}}
             sx={{
             top: 0,
             left: 0,

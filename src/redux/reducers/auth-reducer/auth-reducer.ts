@@ -1,25 +1,37 @@
 import {ThunkType} from "../../store/store";
 import {AuthReducerActionsTypes} from "./auth-actions-types";
-import {setOperationStatus, setInitializedApp, setStatusProgress} from "../ui-reducer/ui-actions";
+import {setInitializedApp, setOperationStatus, setStatusProgress} from "../ui-reducer/ui-actions";
 import {authAPI, LoginParamsType} from "../../../api/api";
 import {resultCodes} from "../../../utils/resultCodes/result-codes";
-import {setIsLoggedInAC} from "./auth-actions";
 import {handleServerAppError, handleServerNetworkError} from "../../../utils/error-util/error-utils";
+import {createSlice} from "@reduxjs/toolkit";
 
 
 const initialState = {
     isLoggedIn: false
 }
-type InitialStateType = typeof initialState
+//type InitialStateType = typeof initialState
 
-export const authReducer = (state: InitialStateType = initialState, action: AuthReducerActionsTypes): InitialStateType => {
-    switch (action.type) {
-        case 'login/SET-IS-LOGGED-IN':
-            return {...state, isLoggedIn: action.value}
-        default:
-            return state
+
+ const slice = createSlice({
+    name:'auth',
+    initialState:initialState,
+    reducers:{
+        setIsLoggedIn (state, action: AuthReducerActionsTypes) {
+            state.isLoggedIn = action.payload.value
+        }
     }
-}
+})
+export const authReducer = slice.reducer
+const {setIsLoggedIn} = slice.actions
+// export const authReducer = (state: InitialStateType = initialState, action: AuthReducerActionsTypes): InitialStateType => {
+//     switch (action.type) {
+//         case 'login/SET-IS-LOGGED-IN':
+//             return {...state, isLoggedIn: action.value}
+//         default:
+//             return state
+//     }
+// }
 
 
 // thunks
@@ -40,9 +52,9 @@ export const initializeApp = (): ThunkType => async dispatch => {
         }, 100)
         const response = await authAPI.me()
         if (response.resultCode === resultCodes.success) {
-            dispatch(setIsLoggedInAC(true))
+            dispatch(setIsLoggedIn({value:true}))
         } else {
-            dispatch(setIsLoggedInAC(false))
+            dispatch(setIsLoggedIn({value:false}))
         }
     } catch (e: any) {
 
@@ -54,7 +66,7 @@ export const login = (data: LoginParamsType): ThunkType => async dispatch => {
         dispatch(setOperationStatus('loading'))
         const response = await authAPI.login(data)
         if (response.resultCode === resultCodes.success) {
-            dispatch(setIsLoggedInAC(true))
+            dispatch(setIsLoggedIn({value:true}))
             dispatch(setOperationStatus('succeeded'))
         } else {
             handleServerAppError<{ userId: number }>(dispatch, response)
@@ -72,7 +84,7 @@ export const logout = (): ThunkType => async dispatch => {
         const response = await authAPI.logout()
         if (response.resultCode === resultCodes.success) {
 
-            dispatch(setIsLoggedInAC(false))
+            dispatch(setIsLoggedIn({value:false}))
             dispatch(setOperationStatus('succeeded'))
         } else {
             handleServerAppError<{}>(dispatch, response)

@@ -1,4 +1,4 @@
-import {applyMiddleware, combineReducers, createStore} from "redux";
+import {combineReducers} from "redux";
 import {tasksReducer} from "../reducers/task-reducer/tasks-reducer";
 import {todoListsReducer} from "../reducers/todolist-reducer/todolists-reducer";
 import thunkMiddleware, {ThunkAction} from "redux-thunk";
@@ -9,6 +9,7 @@ import {uiReducer} from "../reducers/ui-reducer/ui-reducer";
 import {UiReducerActionsTypes} from "../reducers/ui-reducer/ui-actions-types";
 import {AuthReducerActionsTypes} from "../reducers/auth-reducer/auth-actions-types";
 import {authReducer} from "../reducers/auth-reducer/auth-reducer";
+import {configureStore} from "@reduxjs/toolkit";
 
 export type GlobalStateType = ReturnType<typeof rootReducer>
 
@@ -29,7 +30,11 @@ const rootReducer = combineReducers({
     auth: authReducer,
 })
 
-export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
+//export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
+export const store = configureStore({
+    reducer: rootReducer,
+    middleware:getDefaultMiddleware => getDefaultMiddleware().prepend(thunkMiddleware)
+})
 
 
 

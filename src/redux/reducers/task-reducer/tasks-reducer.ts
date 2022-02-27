@@ -1,6 +1,6 @@
 import {ThunkType} from "../../store/store";
 import {taskAPI, TaskStatuses, TaskType} from "../../../api/api";
-import {addTaskAC, removeTaskAC, setTasks, updateTaskAC} from "./task-actions";
+import {addTaskAC, changeTaskEntityStatusAC, removeTaskAC, setTasks, updateTaskAC} from "./task-actions";
 import {TaskReducerActionsTypes} from "./tasks-actions-types";
 import {TodolistReducerActionsTypes} from "../todolist-reducer/todolist-actions-types";
 import {setOperationStatus} from "../ui-reducer/ui-actions";
@@ -54,6 +54,13 @@ export function tasksReducer(tasks: TaskStateType = {}, action: TaskReducerActio
             let copyTasks = {...tasks}
             delete copyTasks[action.id]
             return copyTasks
+        case "CHANGE-TASK-ENTITY-STATUS":
+            return {
+                ...tasks,
+        [action.payload.todolistID]:tasks[action.payload.todolistID].map(
+            task => task.id === action.payload.taskID? {...task,entityTaskStatus:action.payload.entityStatus}: task
+        )
+            }
         default:
             return tasks
     }
@@ -85,11 +92,13 @@ export const addTask = (todolistID: string, title: string): ThunkType => async d
 }
 export const removeTask = (todolistID: string, taskID: string): ThunkType => async dispatch => {
     dispatch(setOperationStatus("loading"))
+    dispatch(changeTaskEntityStatusAC(todolistID,taskID,"loading"))
     const response = await taskAPI.removeTask(todolistID, taskID)
     if (response.data.resultCode === resultCodes.success) {
         //dispatch(getTasks(todolistID))
         dispatch(removeTaskAC(todolistID, taskID))
         dispatch(setOperationStatus("succeeded"))
+        dispatch(changeTaskEntityStatusAC(todolistID,taskID,"succeeded"))
     }
 }
 export const updateTask = (todolistID: string, taskID: string, change: Partial<TaskType>): ThunkType =>

@@ -1,10 +1,10 @@
-import React, {Dispatch, useCallback, useEffect, useMemo} from "react";
+import React, {Dispatch, useCallback, useMemo} from "react";
 import {AddItemInput} from "../Common/AddItemInput/AddItemInput";
 import {EditableSpan} from "../Common/EditableSpan/EditableSpan";
 import {FilterValuesType} from "../../redux/reducers/todolist-reducer/todolists-reducer";
 import {TaskItem} from "../TaskItem/TaskItem";
 import {TaskStatuses, TaskType} from "../../api/api";
-import {addTask, getTasks, removeTask, updateTask} from "../../redux/reducers/task-reducer/tasks-reducer";
+import {addTask, removeTask, updateTask} from "../../redux/reducers/task-reducer/tasks-reducer";
 import {useDispatch} from "react-redux";
 import {ThunkType} from "../../redux/store/store";
 import {Delete} from "@mui/icons-material";
@@ -72,6 +72,7 @@ const Todolist = React.memo(function ({
                 return (
                     <Paper key={t.id} style={{margin: "5px 5px"}}>
                         <TaskItem
+                            entityTaskStatus={t.entityTaskStatus!}
                             key={t.id}
                             removeTask={removeTaskHandler}
                             renameTask={renameTaskHandler}

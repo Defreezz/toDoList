@@ -1,18 +1,18 @@
 type InitialStateType = {
-    darkTheme: boolean
+    isDarkTheme: boolean
 }
 type ToggleTheme = {
     type:'TOGGLE-THEME'
-    theme:boolean
+    isDarkTheme:boolean
 }
 export  type ThemeActionsTypes = ToggleTheme
 
-export function themeReducer(state:InitialStateType = {darkTheme:false}, action: ThemeActionsTypes)  {
+export function themeReducer(state:InitialStateType = {isDarkTheme:true}, action: ThemeActionsTypes)  {
     switch (action.type) {
         case 'TOGGLE-THEME': {
             return {
                 ...state,
-                darkTheme:action.theme
+                isDarkTheme:action.isDarkTheme
             }
         }
         default:
@@ -20,6 +20,6 @@ export function themeReducer(state:InitialStateType = {darkTheme:false}, action:
     }
 }
 
-export const toggleTheme = (theme:boolean):ToggleTheme => {
-    return {type:"TOGGLE-THEME",theme}
+export const toggleTheme = (isDarkTheme:boolean):ToggleTheme => {
+    return {type:"TOGGLE-THEME",isDarkTheme}
 }

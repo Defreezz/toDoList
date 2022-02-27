@@ -8,7 +8,7 @@ import {
     renameTodoListAC,
     setTodolists
 } from "./todolist-actions";
-import {setOperationStatus, setInitializedApp, setStatusProgress} from "../ui-reducer/ui-actions";
+import {setInitializedApp, setOperationStatus} from "../ui-reducer/ui-actions";
 import {RequestStatusType} from "../ui-reducer/ui-reducer";
 import {resultCodes} from "../../../utils/resultCodes/result-codes";
 import {handleServerAppError, handleServerNetworkError} from "../../../utils/error-util/error-utils";

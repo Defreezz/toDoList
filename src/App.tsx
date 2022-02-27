@@ -15,19 +15,19 @@ const App = React.memo(function () {
     console.log("app")
 
     const dispatch = useDispatch<Dispatch<AllActionsType | ThunkType>>()
-    const theme = useSelector((state: GlobalStateType) => state.theme.darkTheme)
+    const isDarkTheme = useSelector((state: GlobalStateType) => state.theme.isDarkTheme)
 
     const isLoggedIn = useSelector((state: GlobalStateType) => state.auth.isLoggedIn)
     const initializeStatus = useSelector((state: GlobalStateType) => state.ui.initializeStatus)
     const progress = useSelector((state: GlobalStateType) => state.ui.progress)
 
-    const setLocalStorageThemeHandler = useCallback((theme: boolean) => {
-        localStorage.setItem("darkTheme", JSON.stringify(theme))
+    const setLocalStorageThemeHandler = useCallback((isDarkTheme: boolean) => {
+        localStorage.setItem("isDarkTheme", JSON.stringify(isDarkTheme))
     }, [])
     const getLocalStorageThemeHandler = useCallback(() => {
-        let localTheme = localStorage.getItem("darkTheme")
+        let localTheme = localStorage.getItem("isDarkTheme")
         localTheme === null
-            ? dispatch(toggleTheme(false))
+            ? dispatch(toggleTheme(true))
             : dispatch(toggleTheme(localTheme && JSON.parse(localTheme)))
     }, [dispatch])
 
@@ -36,21 +36,21 @@ const App = React.memo(function () {
         getLocalStorageThemeHandler()
     }, [getLocalStorageThemeHandler])
     useEffect(() => {
-        setLocalStorageThemeHandler(theme)
-    }, [setLocalStorageThemeHandler, theme])
+        setLocalStorageThemeHandler(isDarkTheme)
+    }, [setLocalStorageThemeHandler, isDarkTheme])
     useLayoutEffect(() => {
         dispatch(initializeApp())
     }, [dispatch])
 
     if (!initializeStatus) {
         return (
-            <ThemeProvider theme={theme ? darkTheme : lightTheme}>
+            <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
                 <CircularProgressWithLabel value={progress}/> )
             </ThemeProvider> )
     }
 
     return (
-        <ThemeProvider theme={theme ? darkTheme : lightTheme}>
+        <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
             <>
                 {initializeStatus && isLoggedIn
                     ? <Main/>

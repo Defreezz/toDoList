@@ -1,4 +1,5 @@
 import axios from "axios";
+import {RequestStatusType} from "../redux/reducers/ui-reducer/ui-reducer";
 
 
 export const instance = axios.create({
@@ -41,6 +42,7 @@ export type TaskType = {
     startDate?: string
     deadline?: string
     addedDate?: string
+    entityTaskStatus?:RequestStatusType
 }
 export type UpdateTaskModelType = {
 

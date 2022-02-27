@@ -18,7 +18,7 @@ import {LoginParamsType} from "../../api/api";
 export const Login = React.memo(() => {
     const dispatch = useDispatch<Dispatch<AllActionsType | ThunkType>>()
 
-    const theme = useSelector((state: GlobalStateType) => state.theme.darkTheme)
+    const isDarkTheme = useSelector((state: GlobalStateType) => state.theme.isDarkTheme)
 
     const formik = useFormik({
         initialValues: {
@@ -51,7 +51,7 @@ export const Login = React.memo(() => {
               display={"flex"}
               alignItems={"center"}
               justifyContent={'center'}
-              style={{minHeight: "100vh", backgroundColor: theme ? "#484e50" : "rgba(96,151,225,0.37)"}}
+              style={{minHeight: "100vh", backgroundColor: isDarkTheme ? "#484e50" : "rgba(96,151,225,0.37)"}}
         >
             <Grid item justifyContent={'center'}>
                 <FormControl>

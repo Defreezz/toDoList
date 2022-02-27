@@ -5,10 +5,10 @@ import React from "react";
 
 type ToggleThemeType = {
     onClickHandler: () => void
-    theme: boolean
+    isDarkTheme: boolean
 }
 
-export const ToggleTheme: React.FC<ToggleThemeType> = ({onClickHandler,theme}) => {
+export const ToggleTheme: React.FC<ToggleThemeType> = ({onClickHandler,isDarkTheme}) => {
 
 
     return (
@@ -16,7 +16,7 @@ export const ToggleTheme: React.FC<ToggleThemeType> = ({onClickHandler,theme}) =
             onClick={onClickHandler}
             color="inherit"
         >
-            {theme ? (
+            {isDarkTheme ? (
                 <Brightness7Icon/>
             ) : (
                 <Brightness4Icon/>

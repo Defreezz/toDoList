@@ -34,14 +34,14 @@ export const Main = React.memo( () => {
     const isLoggedIn = useSelector((state: GlobalStateType) => state.auth.isLoggedIn)
 
     const operationStatus = useSelector((state: GlobalStateType) => state.ui.operationStatus)
-    const theme = useSelector((state: GlobalStateType) => state.theme.darkTheme)
+    const isDarkTheme = useSelector((state: GlobalStateType) => state.theme.isDarkTheme)
     const todoLists = useSelector((state: GlobalStateType) => state.todoLists)
     const tasks = useSelector((state: GlobalStateType) => state.tasks)
 
 
     const toggleThemeHandler = useCallback (() => {
-        dispatch(toggleTheme(!theme))
-    },[dispatch,theme])
+        dispatch(toggleTheme(!isDarkTheme))
+    },[dispatch,isDarkTheme])
     const logoutHandler = useCallback (() => {
         dispatch(logout())
     },[dispatch])
@@ -92,14 +92,14 @@ export const Main = React.memo( () => {
     )
 
     return (
-        <div style={{minHeight: "100vh", backgroundColor: theme ? "#484e50" : "rgba(96,151,225,0.37)"}}>
+        <div style={{minHeight: "100vh", backgroundColor: isDarkTheme ? "#484e50" : "rgba(96,151,225,0.37)"}}>
             <AppBar position={"static"}>
                 <Toolbar sx={{justifyContent: 'space-between'}}>
                     <Box>
                         <IconButton>
                             <Menu/>
                         </IconButton>
-                        <ToggleTheme onClickHandler={toggleThemeHandler} theme={theme}/>
+                        <ToggleTheme onClickHandler={toggleThemeHandler} isDarkTheme={isDarkTheme}/>
                     </Box>
                     <Typography>
                         Todolists

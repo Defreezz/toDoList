@@ -3,53 +3,59 @@ import {EditableSpan} from "../Common/EditableSpan/EditableSpan";
 import {TaskStatuses, TaskType} from "../../api/api";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
 import {Delete} from "@mui/icons-material";
+import {RequestStatusType} from "../../redux/reducers/ui-reducer/ui-reducer";
 
 
 type TaskItemType = {
-    todoListID:string
-    task:TaskType
-    removeTask: (todolistID: string,taskID: string) => void
+    todoListID: string
+    task: TaskType
+    entityTaskStatus: RequestStatusType
+    removeTask: (todolistID: string, taskID: string) => void
     renameTask: (taskID: string, todolistID: string, newTitle: string) => void
-    changeTaskStatus: (todolistID: string,taskID: string, status: TaskStatuses) => void
+    changeTaskStatus: (todolistID: string, taskID: string, status: TaskStatuses) => void
 }
 
-export const TaskItem = React.memo (({
-                             task,
-                             removeTask,
-                             renameTask,
-                             changeTaskStatus,
-                             todoListID,
-                         }: TaskItemType) => {
+export const TaskItem = React.memo(({
+                                        task,
+                                        removeTask,
+                                        renameTask,
+                                        entityTaskStatus,
+                                        changeTaskStatus,
+                                        todoListID,
+                                    }: TaskItemType) => {
 
-    const renameTaskHandler = useCallback ((newTitle: string) => {
-        renameTask(task.id, todoListID, newTitle)
-    },[task.id, todoListID,renameTask])
+        const renameTaskHandler = useCallback((newTitle: string) => {
+            renameTask(task.id, todoListID, newTitle)
+        }, [task.id, todoListID, renameTask])
 
-    const onChangeStatusHandler = useCallback ((e: ChangeEvent<HTMLInputElement>) => {
-        const isDoneValue = e.currentTarget.checked
-        changeTaskStatus(
-            todoListID,task.id, isDoneValue?TaskStatuses.Completed:TaskStatuses.New)
+        const onChangeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+            const isDoneValue = e.currentTarget.checked
+            changeTaskStatus(
+                todoListID, task.id, isDoneValue ? TaskStatuses.Completed : TaskStatuses.New)
 
-    },[task.id, todoListID,changeTaskStatus])
+        }, [task.id, todoListID, changeTaskStatus])
 
-    const removeTaskHandler = useCallback (() => {
-        removeTask(todoListID,task.id )
-    },[task.id, todoListID,removeTask])
+        const removeTaskHandler = useCallback(() => {
+            removeTask(todoListID, task.id)
+        }, [task.id, todoListID, removeTask])
 
-
-    return (
-        <ListItem key={task.id}>
-            <div>
-            <Checkbox
-                size={"small"}
-                checked={!!task.status}
-                onChange={onChangeStatusHandler}
-            />
-            <EditableSpan
-                renameItem={renameTaskHandler}
-                title={task.title}/>
-            </div>
-            <IconButton size={"small"} onClick={removeTaskHandler}><Delete/></IconButton>
-        </ListItem>)
-}
+        return (
+            <ListItem key={task.id}>
+                <div>
+                    <Checkbox
+                        size={"small"}
+                        checked={!!task.status}
+                        onChange={onChangeStatusHandler}
+                    />
+                    <EditableSpan
+                        renameItem={renameTaskHandler}
+                        title={task.title}/>
+                </div>
+                <IconButton
+                    size={"small"}
+                    disabled={entityTaskStatus === "loading"}
+                    onClick={removeTaskHandler}
+                ><Delete/></IconButton>
+            </ListItem>)
+    }
 )
