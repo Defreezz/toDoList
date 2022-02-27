@@ -3,14 +3,14 @@ import {UiReducerActionsTypes} from "./ui-actions-types";
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 
 export type InitialStateType = {
-    initializeStatus: RequestStatusType
+    initializeStatus: boolean
     operationStatus: RequestStatusType
     progress: number
     error: string | null
 }
 
 const initialState: InitialStateType = {
-    initializeStatus: "idle",
+    initializeStatus: false,
     operationStatus: "idle",
     progress: 0,
     error: null
@@ -18,7 +18,7 @@ const initialState: InitialStateType = {
 
 export function uiReducer(state: InitialStateType = initialState, action: UiReducerActionsTypes): InitialStateType {
     switch (action.type) {
-        case 'UI/SET-STATUS-APP':
+        case 'UI/SET-INITIALIZED-APP':
             return {
                 ...state,
                 initializeStatus: action.initializeStatus

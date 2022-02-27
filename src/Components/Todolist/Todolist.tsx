@@ -1,4 +1,4 @@
-import React, {Dispatch, useCallback, useEffect} from "react";
+import React, {Dispatch, useCallback, useEffect, useMemo} from "react";
 import {AddItemInput} from "../Common/AddItemInput/AddItemInput";
 import {EditableSpan} from "../Common/EditableSpan/EditableSpan";
 import {FilterValuesType} from "../../redux/reducers/todolist-reducer/todolists-reducer";
@@ -66,26 +66,23 @@ const Todolist = React.memo(function ({
         tasksForRender = tasks.filter(t => t.status === TaskStatuses.Completed)
     }
 
-    useEffect(() => {
-        dispatchThunk(getTasks(todolistID))
-    }, [dispatchThunk, todolistID])
 
     //мапится массив тасок
-    const tasksJSX = tasksForRender.map(t => {
-            return (
-                <Paper key={t.id} style={{margin: "5px 5px"}}>
-                    <TaskItem
-                        key={t.id}
-                        removeTask={removeTaskHandler}
-                        renameTask={renameTaskHandler}
-                        changeTaskStatus={changeTaskStatusHandler}
-                        task={t}
-                        todoListID={todolistID}
-                    />
-                </Paper>
-            )
-        }
-    )
+    const tasksJSX = useMemo(() => tasksForRender.map(t => {
+                return (
+                    <Paper key={t.id} style={{margin: "5px 5px"}}>
+                        <TaskItem
+                            key={t.id}
+                            removeTask={removeTaskHandler}
+                            renameTask={renameTaskHandler}
+                            changeTaskStatus={changeTaskStatusHandler}
+                            task={t}
+                            todoListID={todolistID}
+                        />
+                    </Paper>
+                )
+            }
+        ),[changeTaskStatusHandler, removeTaskHandler, renameTaskHandler, tasksForRender,todolistID])
 
     const onAllClickHandler = useCallback(() => {
             changeTaskFilter("all", todolistID)
@@ -100,25 +97,19 @@ const Todolist = React.memo(function ({
         },
         [changeTaskFilter, todolistID])
 
-    const buttonStatusClass = (filter: FilterValuesType) =>
+    const buttonStatusClass = useCallback( (filter: FilterValuesType) =>
         filter === filterTdl ? "secondary" : "primary" //меняет класс кнопкам в зависимости от фильтрации в аpp.tsx
+    ,[filterTdl])
 
 
     return (
             <div>
                 <Typography>
                     <EditableSpan title={title} renameItem={renameTodoList}/>
-                    <IconButton
-                        disabled={entityStatus === "loading"}
-                        size={"small"}
-                        onClick={() => {
-                        removeTodolist(todolistID)
-                    }}>
-                        <Delete/>
-                    </IconButton>
                 </Typography>
                 <div>
                     <AddItemInput
+                        placeHolder={"New task"}
                         addItem={addTaskHandler}
                         entityStatus={entityStatus}
                     />
@@ -126,13 +117,27 @@ const Todolist = React.memo(function ({
                 <List>
                     {tasksJSX}
                 </List>
-                <div>
-                    <ButtonGroup size={"small"} variant={"contained"} sx={{bottom: "15px", position: "absolute"}}>
-                        <Button onClick={onAllClickHandler} color={buttonStatusClass("all")}>All</Button>
-                        <Button onClick={onActiveClickHandler} color={buttonStatusClass("active")}>Active</Button>
-                        <Button onClick={onCompletedClickHandler}
-                                color={buttonStatusClass("completed")}>Completed</Button>
+                <div style={{display:"flex", justifyContent:"space-between",bottom: "15px", position: "absolute"}}>
+                    <ButtonGroup size={"small"} variant={"contained"}>
+                        <Button onClick={onAllClickHandler} color={buttonStatusClass("all")}>
+                            All
+                        </Button>
+                        <Button onClick={onActiveClickHandler} color={buttonStatusClass("active")}>
+                            Active
+                        </Button>
+                        <Button onClick={onCompletedClickHandler} color={buttonStatusClass("completed")}>
+                            Completed
+                        </Button>
+
                     </ButtonGroup>
+                    <IconButton
+                        disabled={entityStatus === "loading"}
+                        size={"small"}
+                        onClick={() => {
+                            removeTodolist(todolistID)
+                        }}>
+                        <Delete/>
+                    </IconButton>
                 </div>
             </div>
     )

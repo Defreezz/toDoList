@@ -3,8 +3,8 @@ import {taskAPI, TaskStatuses, TaskType} from "../../../api/api";
 import {addTaskAC, removeTaskAC, setTasks, updateTaskAC} from "./task-actions";
 import {TaskReducerActionsTypes} from "./tasks-actions-types";
 import {TodolistReducerActionsTypes} from "../todolist-reducer/todolist-actions-types";
-import {setOperationStatus, setUiError} from "../ui-reducer/ui-actions";
-import {resultCodes} from "../../../utils/resultCodes/resultCodes";
+import {setOperationStatus} from "../ui-reducer/ui-actions";
+import {resultCodes} from "../../../utils/resultCodes/result-codes";
 import {handleServerAppError, handleServerNetworkError} from "../../../utils/error-util/error-utils";
 
 

@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import {createTheme} from "@mui/material";
 
 export const lightTheme = createTheme({
     palette: {
@@ -10,36 +10,52 @@ export const lightTheme = createTheme({
             main: "#0b2877",
         },
     },
-    components:{
-        MuiContainer:{
-            defaultProps:{
-                maxWidth:false,
+    typography: {
+        button: {
+            textTransform: "none"
+        }
+    },
+    components: {
+        MuiContainer: {
+            defaultProps: {
+                maxWidth: false,
 
             },
         },
-        MuiPaper:{
-            styleOverrides:{
-                elevation8:{
-                    position:"relative",
-                    minHeight:"500px",
-                    padding:"18px",
+        MuiPaper: {
+            styleOverrides: {
+                elevation8: {
+                    position: "relative",
+                    minHeight: "500px",
+                    padding: "18px",
                 }
             }
         },
-        MuiListItem:{
-            defaultProps:{
-                sx:{
-                    justifyContent:"space-between",
+        MuiListItem: {
+            defaultProps: {
+                sx: {
+                    justifyContent: "space-between",
                 }
             }
         },
-        MuiTypography:{
-            defaultProps:{
-                display:"flex",
-                justifyContent:"space-between",
-                fontWeight:"bold",
-                variant:"h6",
+        MuiTypography: {
+            defaultProps: {
+                display: "flex",
+                justifyContent: "space-between",
+                fontWeight: "bold",
+                variant: "h6",
             }
+        },
+        MuiButton: {
+            defaultProps: {
+                sx: {
+                    color: "white",
+                    '&:hover': {
+                        backgroundColor: "rgb(11,40,119)",
+                    }
+                },
+
+            },
         },
     },
 });
@@ -54,36 +70,52 @@ export const darkTheme = createTheme({
             main: "#333335",
         },
     },
-    components:{
+    typography: {
+        button: {
+            textTransform: "none"
+        }
+    },
+    components: {
 
-        MuiContainer:{
-            defaultProps:{
-                maxWidth:false,
+        MuiContainer: {
+            defaultProps: {
+                maxWidth: false,
             },
         },
-        MuiPaper:{
-            styleOverrides:{
-                elevation8:{
-                    position:"relative",
-                    minHeight:"500px",
-                    padding:"18px",
+        MuiPaper: {
+            styleOverrides: {
+                elevation8: {
+                    position: "relative",
+                    minHeight: "500px",
+                    padding: "18px",
                 }
             }
         },
-        MuiListItem:{
-            defaultProps:{
-                sx:{
-                    justifyContent:"space-between",
+        MuiListItem: {
+            defaultProps: {
+                sx: {
+                    justifyContent: "space-between",
                 }
             }
         },
-        MuiTypography:{
-            defaultProps:{
-                display:"flex",
-                justifyContent:"space-between",
-                fontWeight:"bold",
-                variant:"h6",
+        MuiTypography: {
+            defaultProps: {
+                display: "flex",
+                justifyContent: "space-between",
+                fontWeight: "bold",
+                variant: "h6",
             }
         },
-    },
+        MuiButton: {
+            defaultProps: {
+                sx: {
+                    color: "white",
+                    '&:hover': {
+                        backgroundColor: "rgb(62, 51, 50)",
+                    }
+                },
+
+            },
+        },
+    }
 });

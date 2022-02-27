@@ -7,9 +7,10 @@ import {RequestStatusType} from "../../../redux/reducers/ui-reducer/ui-reducer";
 type AddItemInputType = {
     addItem: (title: string) => void
     entityStatus?: RequestStatusType
+    placeHolder:string
 }
 
-export const AddItemInput = React.memo(function ({addItem, entityStatus}: AddItemInputType) {
+export const AddItemInput = React.memo(function ({addItem, entityStatus,placeHolder}: AddItemInputType) {
     console.log("form")
     const [newTaskTittle, setNewTaskTittle] = useState("")
     const [error, setError] = useState<string>("")
@@ -40,7 +41,7 @@ export const AddItemInput = React.memo(function ({addItem, entityStatus}: AddIte
             <TextField
                 disabled={entityStatus === "loading"}
                 variant={"outlined"}
-                label={"Title"}
+                label={placeHolder}
                 size={"small"}
                 error={!!error}
                 helperText={error}

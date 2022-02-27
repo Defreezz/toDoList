@@ -14,7 +14,7 @@ export const EditableSpan = React.memo(
                   className,
                   renameItem,
               }: EditableSpanType) {
-        console.log("span span")
+        console.log("editable_span")
         const [editMode, setEditMode] = useState(false)
         const [input, setInput] = useState(" ") // записываем пустую, но сетаем тайтл реальный в колбэке
 
@@ -37,6 +37,7 @@ export const EditableSpan = React.memo(
 
         return editMode
             ? <TextField
+                size={"small"}
                 value={input}
                 onChange={onChangeHandler}
                 onBlur={onBlurHandler}

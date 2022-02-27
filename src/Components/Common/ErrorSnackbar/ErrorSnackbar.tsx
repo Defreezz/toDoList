@@ -1,6 +1,6 @@
-import React, {Dispatch, useState} from 'react';
+import React, {Dispatch} from 'react';
 import Snackbar from '@mui/material/Snackbar';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import MuiAlert, {AlertProps} from '@mui/material/Alert';
 import {useDispatch, useSelector} from "react-redux";
 import {AllActionsType, GlobalStateType, ThunkType} from "../../../redux/store/store";
 import {setUiError} from "../../../redux/reducers/ui-reducer/ui-actions";

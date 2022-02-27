@@ -44,12 +44,23 @@ export type TaskType = {
 }
 export type UpdateTaskModelType = {
 
-    title:string
-    description:string
-    status:TaskStatuses
-    priority:TaskPriorities
+    title: string
+    description: string
+    status: TaskStatuses
+    priority: TaskPriorities
     startDate: string
     deadline: string
+}
+export type LoginParamsType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+    captcha?: string
+}
+export type AuthMeResponseType = {
+    id:number
+    email: string
+    login:string
 }
 export type CommonResponseType<T> = {
     data: T
@@ -65,7 +76,7 @@ export const todolistAPI = {
         return response.data
     },
     async createTodolist(title: string) {
-        const response = await instance.post<CommonResponseType<{item:TodolistType}>>(`/todo-lists`, {title})
+        const response = await instance.post<CommonResponseType<{ item: TodolistType }>>(`/todo-lists`, {title})
         return response.data
     },
     async removeTodolist(todolistID: string) {
@@ -84,16 +95,31 @@ export const taskAPI = {
 
     },
     async addTask(todolistID: string, title: string) {
-        const response = await instance.post<CommonResponseType<{ item: TaskType }>>(`/todo-lists/${todolistID}/tasks`,{title})
+        const response = await instance.post<CommonResponseType<{ item: TaskType }>>(`/todo-lists/${todolistID}/tasks`, {title})
         return response.data
     },
-    async removeTask(todolistID: string, taskID:string) {
-        return await instance.delete<CommonResponseType<{ }>>(`/todo-lists/${todolistID}/tasks/${taskID}`)
+    async removeTask(todolistID: string, taskID: string) {
+        return await instance.delete<CommonResponseType<{}>>(`/todo-lists/${todolistID}/tasks/${taskID}`)
     },
-    async renameTask(todolistID: string, taskID:string,title:string) {
-        return await instance.put<CommonResponseType<{items:TaskType}>>(`/todo-lists/${todolistID}/tasks/${taskID}`,{title})
+    async renameTask(todolistID: string, taskID: string, title: string) {
+        return await instance.put<CommonResponseType<{ items: TaskType }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, {title})
     },
-    async updateTask(todolistID: string, taskID:string,model:Partial<UpdateTaskModelType>) {
-        return await instance.put<CommonResponseType<{items:TaskType}>>(`/todo-lists/${todolistID}/tasks/${taskID}`,model)
+    async updateTask(todolistID: string, taskID: string, model: Partial<UpdateTaskModelType>) {
+        return await instance.put<CommonResponseType<{ items: TaskType }>>(`/todo-lists/${todolistID}/tasks/${taskID}`, model)
+    },
+}
+
+export const authAPI = {
+    async me () {
+        const response = await instance.get<CommonResponseType<AuthMeResponseType>>(`/auth/me`)
+        return response.data
+    },
+    async login(data: LoginParamsType) {
+        const response = await instance.post<CommonResponseType<{ userId: number }>>(`/auth/login`, data)
+        return response.data
+    },
+    async logout() {
+        const response = await instance.delete<CommonResponseType<{}>>(`/auth/login`)
+        return response.data
     },
 }

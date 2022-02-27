@@ -8,10 +8,11 @@ import {
     renameTodoListAC,
     setTodolists
 } from "./todolist-actions";
-import {setOperationStatus, setStatusApp, setStatusProgress} from "../ui-reducer/ui-actions";
+import {setOperationStatus, setInitializedApp, setStatusProgress} from "../ui-reducer/ui-actions";
 import {RequestStatusType} from "../ui-reducer/ui-reducer";
-import {resultCodes} from "../../../utils/resultCodes/resultCodes";
+import {resultCodes} from "../../../utils/resultCodes/result-codes";
 import {handleServerAppError, handleServerNetworkError} from "../../../utils/error-util/error-utils";
+import {getTasks} from "../task-reducer/tasks-reducer";
 
 
 export type FilterValuesType = "all" | "active" | "completed"
@@ -62,21 +63,15 @@ export function todoListsReducer(todoLists: TodolistDomainType[] = [], action: T
 //Thunk
 export const getTodolists = (): ThunkType => async dispatch => {
     try {
-        dispatch(setStatusApp("loading"))
-        let progress = 0
-        const timer = setInterval(() => {
-            if (progress < 100) {
-                progress += 10
-                dispatch(setStatusProgress(progress))
-            } else {
-                clearInterval(timer)
-                dispatch(setStatusApp("succeeded"))
-            }
-        }, 100)
         const response = await todolistAPI.getTodolists()
         dispatch(setTodolists(response))
-    } catch (e) {
-        console.log(e)
+        dispatch(setInitializedApp(true))
+        response.forEach((ts)=>{
+            dispatch(getTasks(ts.id))
+        })
+    } catch (e:any){
+        dispatch(setInitializedApp(true))
+        handleServerNetworkError(dispatch,e.message)
     }
 
 }

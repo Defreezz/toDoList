@@ -7,6 +7,7 @@ export  const handleServerNetworkError = (dispatch:Dispatch<AllActionsType>,mess
     dispatch(setUiError(message))
     dispatch(setOperationStatus("failed"))
 }
+
 export  const handleServerAppError = <T> (dispatch:Dispatch<AllActionsType>,response:CommonResponseType<T>) => {
     if (response.messages.length) {
         dispatch(setUiError(response.messages[0]))

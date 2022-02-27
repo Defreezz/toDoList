@@ -1,7 +1,7 @@
 import {RequestStatusType} from "./ui-reducer";
 
-export const setStatusApp = (initializeStatus: RequestStatusType) => {
-    return {type: "UI/SET-STATUS-APP",initializeStatus} as const
+export const setInitializedApp = (initializeStatus: boolean) => {
+    return {type: "UI/SET-INITIALIZED-APP",initializeStatus} as const
 }
 export const setStatusProgress = (progress: number) => {
     return {type: "UI/SET-PROGRESS", progress} as const
