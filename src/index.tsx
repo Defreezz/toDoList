@@ -13,7 +13,7 @@ ReactDOM.render(
     <Provider store={store}>
         <BrowserRouter>
             <Routes>
-                <Route path={"/"} element={<App/>}/>
+                <Route path={"/todolist"} element={<App/>}/>
                 <Route path={"/login"} element={<Login/>}/>
                 <Route path={"/404"} element={<PageNotFound/>} />
                 <Route path={"*"} element={<Navigate to={"/404"}/>}/>
