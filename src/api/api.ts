@@ -5,9 +5,9 @@ import {RequestStatusType} from "../redux/reducers/ui-reducer/ui-reducer";
 export const instance = axios.create({
     withCredentials: true,
     baseURL: 'https://social-network.samuraijs.com/api/1.1',
-    headers: {
-        "API-KEY": "b701020f-78a1-4daa-8002-6ee349adc8a0"
-    }
+    // headers: {
+    //     "API-KEY": "b701020f-78a1-4daa-8002-6ee349adc8a0"
+    // }
 })
 
 export enum TaskStatuses {
