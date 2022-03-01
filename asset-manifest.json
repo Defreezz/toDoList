@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/trellokiller/static/css/main.e2c67647.chunk.css",
+    "main.js": "/trellokiller/static/js/main.d91586f5.chunk.js",
+    "main.js.map": "/trellokiller/static/js/main.d91586f5.chunk.js.map",
+    "runtime-main.js": "/trellokiller/static/js/runtime-main.6746493b.js",
+    "runtime-main.js.map": "/trellokiller/static/js/runtime-main.6746493b.js.map",
+    "static/js/2.272777b6.chunk.js": "/trellokiller/static/js/2.272777b6.chunk.js",
+    "static/js/2.272777b6.chunk.js.map": "/trellokiller/static/js/2.272777b6.chunk.js.map",
+    "index.html": "/trellokiller/index.html",
+    "precache-manifest.07df699715e8a3450ed5d5133f802a7c.js": "/trellokiller/precache-manifest.07df699715e8a3450ed5d5133f802a7c.js",
+    "service-worker.js": "/trellokiller/service-worker.js",
+    "static/css/main.e2c67647.chunk.css.map": "/trellokiller/static/css/main.e2c67647.chunk.css.map",
+    "static/js/2.272777b6.chunk.js.LICENSE.txt": "/trellokiller/static/js/2.272777b6.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.6746493b.js",
+    "static/js/2.272777b6.chunk.js",
+    "static/css/main.e2c67647.chunk.css",
+    "static/js/main.d91586f5.chunk.js"
+  ]
+}
