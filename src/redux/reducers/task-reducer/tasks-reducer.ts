@@ -98,7 +98,6 @@ export const removeTask = (todolistID: string, taskID: string): ThunkType => asy
         //dispatch(getTasks(todolistID))
         dispatch(removeTaskAC(todolistID, taskID))
         dispatch(setOperationStatus("succeeded"))
-        dispatch(changeTaskEntityStatusAC(todolistID,taskID,"succeeded"))
     }
 }
 export const updateTask = (todolistID: string, taskID: string, change: Partial<TaskType>): ThunkType =>

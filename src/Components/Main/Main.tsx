@@ -10,7 +10,7 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import {AddItemInput} from "../Common/AddItemInput/AddItemInput";
 import {ErrorSnackbar} from "../Common/ErrorSnackbar/ErrorSnackbar";
-import React, {Dispatch, useCallback, useEffect} from "react";
+import React, {Dispatch, useCallback, useEffect, useMemo} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AllActionsType, GlobalStateType, ThunkType} from "../../redux/store/store";
 import {toggleTheme} from "../../redux/reducers/theme-reducer/theme-reducer";
@@ -70,26 +70,29 @@ export const Main = React.memo( () => {
     }, [dispatch])
 
 
-    const todoListRender = (todoLists || []).map((tdl) => {
-            let tasksForRender = tasks[tdl.id]
-            return (
-                <Grid item key={tdl.id}>
-                    <Paper elevation={8}>
-                        <Todolist
-                            entityStatus={tdl.entityStatus}
-                            key={tdl.id}
-                            todolistID={tdl.id}
-                            title={tdl.title}
-                            tasks={tasksForRender}
-                            removeTodolist={removeTodoListHandler}
-                            renameTodolist={renameTodolistHandler}
-                            changeTaskFilter={changeTaskFilter}
-                            filterTdl={tdl.filter}
-                        />
-                    </Paper>
-                </Grid>)
-        }
-    )
+    const todoListRender = useMemo( ()=> {
+       return  todoLists.map((tdl) => {
+                console.log(`ListName: ${tdl.title}`)
+                let tasksForRender = tasks[tdl.id]
+                return (
+                    <Grid item key={tdl.id}>
+                        <Paper elevation={8}>
+                            <Todolist
+                                entityStatus={tdl.entityStatus}
+                                key={tdl.id}
+                                todolistID={tdl.id}
+                                title={tdl.title}
+                                tasks={tasksForRender}
+                                removeTodolist={removeTodoListHandler}
+                                renameTodolist={renameTodolistHandler}
+                                changeTaskFilter={changeTaskFilter}
+                                filterTdl={tdl.filter}
+                            />
+                        </Paper>
+                    </Grid>)
+            }
+        )
+    },[todoLists,tasks])
 
     return (
         <div style={{minHeight: "100vh", backgroundColor: isDarkTheme ? "#484e50" : "rgba(96,151,225,0.37)"}}>

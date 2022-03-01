@@ -33,7 +33,6 @@ const Todolist = React.memo(function ({
                                           changeTaskFilter,
                                           filterTdl,
                                       }: TodolistType) {
-    console.log("todolist")
     //const dispatch = useDispatch<Dispatch<AllActionsType>>()
     const dispatchThunk = useDispatch<Dispatch<ThunkType>>()
 
@@ -69,6 +68,7 @@ const Todolist = React.memo(function ({
 
     //мапится массив тасок
     const tasksJSX = useMemo(() => tasksForRender.map(t => {
+            console.log(`${t.title} + ${t.id} ` )
                 return (
                     <Paper key={t.id} style={{margin: "5px 5px"}}>
                         <TaskItem
