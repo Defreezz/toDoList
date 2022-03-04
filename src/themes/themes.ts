@@ -28,6 +28,7 @@ export const lightTheme = createTheme({
                     position: "relative",
                     minHeight: "500px",
                     padding: "18px",
+                    width:"150px"
                 }
             }
         },
@@ -88,6 +89,7 @@ export const darkTheme = createTheme({
                     position: "relative",
                     minHeight: "500px",
                     padding: "18px",
+                    width:"350px",
                 }
             }
         },

@@ -107,7 +107,7 @@ export const Main = React.memo( () => {
                     <Typography>
                         Todolists
                     </Typography>
-                    {isLoggedIn && <Button onClick={logoutHandler}>Log out</Button>}
+                    {isLoggedIn && <Button onClick={logoutHandler}>Logout</Button>}
                 </Toolbar>
                 <div style={{height: "5px"}}>
                     {operationStatus === 'loading' && <LinearProgress/>}
