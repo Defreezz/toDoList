@@ -1,9 +1,11 @@
 import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from "react";
-import {TextField} from "@mui/material";
+import {TextField, Typography} from "@mui/material";
+import {Variant} from "@mui/material/styles/createTypography";
 
 
 type EditableSpanType = {
     title: string
+    variant: Variant
     renameItem: (title: string) => void
     className?: string
 }
@@ -11,6 +13,7 @@ type EditableSpanType = {
 export const EditableSpan = React.memo(
     function ({
                   title,
+                  variant,
                   className,
                   renameItem,
               }: EditableSpanType) {
@@ -27,13 +30,13 @@ export const EditableSpan = React.memo(
         const onBlurHandler = useCallback(() => {
             setEditMode(!editMode)
             renameItem(input)
-        }, [editMode,input,renameItem])
-        const onKeyPressHandler = useCallback( (e: KeyboardEvent<HTMLInputElement>) => {
+        }, [editMode, input, renameItem])
+        const onKeyPressHandler = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
             if (e.key === "Enter") {
                 setEditMode(!editMode)
                 renameItem(input)
             }
-        },[editMode,input,renameItem])
+        }, [editMode, input, renameItem])
 
         return editMode
             ? <TextField
@@ -43,8 +46,17 @@ export const EditableSpan = React.memo(
                 onBlur={onBlurHandler}
                 onKeyPress={onKeyPressHandler}
                 autoFocus={true}/>
-            : <span className={className} onDoubleClick={onDoubleClickHandler}>
-            {title}
-              </span>
+            : <Typography
+                onDoubleClick={onDoubleClickHandler}
+                width={"100%"}
+                align={"left"}
+                noWrap
+                component={"div"}
+                variant={variant}
+                className={className}
+            >
+                {title}
+            </Typography>
+
 
     })

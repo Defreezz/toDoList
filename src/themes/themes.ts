@@ -28,24 +28,20 @@ export const lightTheme = createTheme({
                     position: "relative",
                     minHeight: "500px",
                     padding: "18px",
-                    width:"350px",
+                    width: "300px",
+                },
+                elevation1:{
+                    margin:"0 0 5px 0",
+                    backgroundColor:"#c2d7f3"
                 }
-            }
+            },
         },
         MuiListItem: {
             defaultProps: {
                 sx: {
                     justifyContent: "space-between",
                 }
-            }
-        },
-        MuiTypography: {
-            defaultProps: {
-                display: "flex",
-                justifyContent: "space-between",
-                fontWeight: "bold",
-                variant: "h6",
-            }
+            },
         },
         MuiButton: {
             defaultProps: {
@@ -89,7 +85,14 @@ export const darkTheme = createTheme({
                     position: "relative",
                     minHeight: "500px",
                     padding: "18px",
-                    width:"350px",
+                    width: "300px",
+                }
+            }
+        },
+        MuiList: {
+            styleOverrides: {
+                root: {
+                    margin: "0 0 40px 0"
                 }
             }
         },
@@ -98,14 +101,6 @@ export const darkTheme = createTheme({
                 sx: {
                     justifyContent: "space-between",
                 }
-            }
-        },
-        MuiTypography: {
-            defaultProps: {
-                display: "flex",
-                justifyContent: "space-between",
-                fontWeight: "bold",
-                variant: "h6",
             }
         },
         MuiButton: {

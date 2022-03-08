@@ -8,7 +8,7 @@ import {addTask, removeTask, updateTask} from "../../redux/reducers/task-reducer
 import {useDispatch} from "react-redux";
 import {ThunkType} from "../../redux/store/store";
 import {Delete} from "@mui/icons-material";
-import {Button, ButtonGroup, IconButton, List, Paper, Typography} from "@mui/material";
+import {Button, ButtonGroup, IconButton, List, Paper} from "@mui/material";
 import {RequestStatusType} from "../../redux/reducers/ui-reducer/ui-reducer";
 
 type TodolistType = {
@@ -33,7 +33,7 @@ const Todolist = React.memo(function ({
                                           changeTaskFilter,
                                           filterTdl,
                                       }: TodolistType) {
-    //const dispatch = useDispatch<Dispatch<AllActionsType>>()
+
     const dispatchThunk = useDispatch<Dispatch<ThunkType>>()
 
     const removeTaskHandler = useCallback((todolistID: string, taskID: string) => {
@@ -65,25 +65,23 @@ const Todolist = React.memo(function ({
         tasksForRender = tasks.filter(t => t.status === TaskStatuses.Completed)
     }
 
-
-    //мапится массив тасок
     const tasksJSX = useMemo(() => tasksForRender.map(t => {
-            console.log(`${t.title} + ${t.id} ` )
-                return (
-                    <Paper key={t.id} style={{margin: "5px 5px"}}>
-                        <TaskItem
-                            entityTaskStatus={t.entityTaskStatus!}
-                            key={t.id}
-                            removeTask={removeTaskHandler}
-                            renameTask={renameTaskHandler}
-                            changeTaskStatus={changeTaskStatusHandler}
-                            task={t}
-                            todoListID={todolistID}
-                        />
-                    </Paper>
-                )
-            }
-        ),[changeTaskStatusHandler, removeTaskHandler, renameTaskHandler, tasksForRender,todolistID])
+            console.log(`${t.title} + ${t.id} `)
+            return (
+                <Paper key={t.id} >
+                    <TaskItem
+                        entityTaskStatus={t.entityTaskStatus!}
+                        key={t.id}
+                        removeTask={removeTaskHandler}
+                        renameTask={renameTaskHandler}
+                        changeTaskStatus={changeTaskStatusHandler}
+                        task={t}
+                        todoListID={todolistID}
+                    />
+                </Paper>
+            )
+        }
+    ), [changeTaskStatusHandler, removeTaskHandler, renameTaskHandler, tasksForRender, todolistID])
 
     const onAllClickHandler = useCallback(() => {
             changeTaskFilter("all", todolistID)
@@ -98,49 +96,51 @@ const Todolist = React.memo(function ({
         },
         [changeTaskFilter, todolistID])
 
-    const buttonStatusClass = useCallback( (filter: FilterValuesType) =>
-        filter === filterTdl ? "secondary" : "primary" //меняет класс кнопкам в зависимости от фильтрации в аpp.tsx
-    ,[filterTdl])
+    const buttonStatusClass = useCallback((filter: FilterValuesType) =>
+            filter === filterTdl ? "secondary" : "primary" //меняет класс кнопкам в зависимости от фильтрации в аpp.tsx
+        , [filterTdl])
 
 
     return (
+        <>
+            <EditableSpan
+                variant={"h6"}
+                title={title}
+                renameItem={renameTodoList}/>
             <div>
-                <Typography>
-                    <EditableSpan title={title} renameItem={renameTodoList}/>
-                </Typography>
-                <div>
-                    <AddItemInput
-                        placeHolder={"New task"}
-                        addItem={addTaskHandler}
-                        entityStatus={entityStatus}
-                    />
-                </div>
-                <List>
-                    {tasksJSX}
-                </List>
-                <div style={{display:"flex", justifyContent:"space-between",bottom: "15px", position: "absolute"}}>
-                    <ButtonGroup size={"small"} variant={"contained"}>
-                        <Button onClick={onAllClickHandler} color={buttonStatusClass("all")}>
-                            All
-                        </Button>
-                        <Button onClick={onActiveClickHandler} color={buttonStatusClass("active")}>
-                            Active
-                        </Button>
-                        <Button onClick={onCompletedClickHandler} color={buttonStatusClass("completed")}>
-                            Completed
-                        </Button>
-
-                    </ButtonGroup>
-                    <IconButton
-                        disabled={entityStatus === "loading"}
-                        size={"small"}
-                        onClick={() => {
-                            removeTodolist(todolistID)
-                        }}>
-                        <Delete/>
-                    </IconButton>
-                </div>
+                <AddItemInput
+                    placeHolder={"New task"}
+                    addItem={addTaskHandler}
+                    entityStatus={entityStatus}
+                />
             </div>
+            <List>
+                {tasksJSX}
+            </List>
+            <div style={{bottom: "15px", position: "absolute"}}>
+                <ButtonGroup size={"small"} variant={"contained"}>
+                    <Button onClick={onAllClickHandler} color={buttonStatusClass("all")}>
+                        All
+                    </Button>
+                    <Button onClick={onActiveClickHandler} color={buttonStatusClass("active")}>
+                        Active
+                    </Button>
+                    <Button onClick={onCompletedClickHandler} color={buttonStatusClass("completed")}>
+                        Completed
+                    </Button>
+
+                </ButtonGroup>
+                <IconButton
+                    style={{marginLeft: "86px"}}
+                    disabled={entityStatus === "loading"}
+                    size={"small"}
+                    onClick={() => {
+                        removeTodolist(todolistID)
+                    }}>
+                    <Delete/>
+                </IconButton>
+            </div>
+        </>
     )
 })
 

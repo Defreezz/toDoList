@@ -92,7 +92,7 @@ export const Main = React.memo( () => {
                     </Grid>)
             }
         )
-    },[todoLists,tasks])
+    },[todoLists,tasks,changeTaskFilter,renameTodolistHandler,removeTodoListHandler])
 
     return (
         <div style={{minHeight: "100vh", backgroundColor: isDarkTheme ? "#484e50" : "rgba(96,151,225,0.37)"}}>

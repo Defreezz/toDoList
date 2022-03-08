@@ -57,9 +57,12 @@ export function tasksReducer(tasks: TaskStateType = {}, action: TaskReducerActio
         case "CHANGE-TASK-ENTITY-STATUS":
             return {
                 ...tasks,
-        [action.payload.todolistID]:tasks[action.payload.todolistID].map(
-            task => task.id === action.payload.taskID? {...task,entityTaskStatus:action.payload.entityStatus}: task
-        )
+                [action.payload.todolistID]: tasks[action.payload.todolistID].map(
+                    task => task.id === action.payload.taskID ? {
+                        ...task,
+                        entityTaskStatus: action.payload.entityStatus
+                    } : task
+                )
             }
         default:
             return tasks
@@ -82,17 +85,16 @@ export const addTask = (todolistID: string, title: string): ThunkType => async d
             dispatch(addTaskAC(todolistID, response.data.item, title))
             dispatch(setOperationStatus("succeeded"))
         } else {
-            handleServerAppError<{ item: TaskType }>(dispatch,response)
+            handleServerAppError<{ item: TaskType }>(dispatch, response)
         }
-    }
-    catch (e:any){
-        handleServerNetworkError(dispatch,e.message)
+    } catch (e: any) {
+        handleServerNetworkError(dispatch, e.message)
     }
 
 }
 export const removeTask = (todolistID: string, taskID: string): ThunkType => async dispatch => {
     dispatch(setOperationStatus("loading"))
-    dispatch(changeTaskEntityStatusAC(todolistID,taskID,"loading"))
+    dispatch(changeTaskEntityStatusAC(todolistID, taskID, "loading"))
     const response = await taskAPI.removeTask(todolistID, taskID)
     if (response.data.resultCode === resultCodes.success) {
         //dispatch(getTasks(todolistID))
@@ -104,11 +106,17 @@ export const updateTask = (todolistID: string, taskID: string, change: Partial<T
     async (dispatch, getState) => {
         dispatch(setOperationStatus("loading"))
         const currentTask = getState().tasks[todolistID].find(t => t.id === taskID) as TaskType
-
-        const response = await taskAPI.updateTask(todolistID, taskID, {...currentTask, ...change})
-        if (response.data.resultCode === resultCodes.success) {
-            //dispatch(getTasks(todolistID))
-            dispatch(updateTaskAC({...currentTask, ...change}))
-            dispatch(setOperationStatus("succeeded"))
+        try {
+            const response = await taskAPI.updateTask(todolistID, taskID, {...currentTask, ...change})
+            if (response.data.resultCode === resultCodes.success) {
+                dispatch(updateTaskAC({...currentTask, ...change}))
+                dispatch(setOperationStatus("succeeded"))
+            } else {
+                handleServerAppError<{ items: TaskType }>(dispatch, response.data)
+            }
+        }
+        catch (e:any){
+            handleServerNetworkError(dispatch,e.message)
         }
     }
+

@@ -40,17 +40,18 @@ export const TaskItem = React.memo(({
         }, [task.id, todoListID, removeTask])
 
         return (
-            <ListItem key={task.id}>
-                <div>
+            <ListItem key={task.id} >
+
                     <Checkbox
                         size={"small"}
                         checked={!!task.status}
                         onChange={onChangeStatusHandler}
                     />
                     <EditableSpan
+                        variant={"body2"}
                         renameItem={renameTaskHandler}
                         title={task.title}/>
-                </div>
+
                 <IconButton
                     size={"small"}
                     disabled={entityTaskStatus === "loading"}

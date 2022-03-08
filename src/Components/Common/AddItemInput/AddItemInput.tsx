@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import {IconButton, TextField} from "@mui/material";
-import {AddBox} from "@mui/icons-material";
 import {RequestStatusType} from "../../../redux/reducers/ui-reducer/ui-reducer";
+import {AddBoxOutlined} from "@mui/icons-material";
 
 
 type AddItemInputType = {
@@ -37,7 +37,7 @@ export const AddItemInput = React.memo(function ({addItem, entityStatus,placeHol
     }, [addItemHandler])
 
     return (
-        <div>
+        <div style={{display: "flex",justifyContent: "space-between",alignItems:"center"}}>
             <TextField
                 disabled={entityStatus === "loading"}
                 variant={"outlined"}
@@ -54,7 +54,7 @@ export const AddItemInput = React.memo(function ({addItem, entityStatus,placeHol
                 size={"small"}
                 onClick={addItemHandler}
             >
-                <AddBox/>
+                <AddBoxOutlined/>
             </IconButton>
         </div>
     )
