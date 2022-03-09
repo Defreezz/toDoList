@@ -86,6 +86,9 @@ export const darkTheme = createTheme({
                     minHeight: "500px",
                     padding: "18px",
                     width: "300px",
+                },
+                elevation1:{
+                    margin:"0 0 5px 0",
                 }
             }
         },

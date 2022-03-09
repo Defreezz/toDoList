@@ -1,20 +1,9 @@
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Menu from "@mui/icons-material/Menu";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import LinearProgress from "@mui/material/LinearProgress";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import {AddItemInput} from "../Common/AddItemInput/AddItemInput";
 import {ErrorSnackbar} from "../Common/ErrorSnackbar/ErrorSnackbar";
-import React, {Dispatch, useCallback, useEffect, useMemo} from "react";
+import React, {Dispatch, memo, useCallback, useEffect, useMemo} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AllActionsType, GlobalStateType, ThunkType} from "../../redux/store/store";
 import {toggleTheme} from "../../redux/reducers/theme-reducer/theme-reducer";
-import Paper from "@mui/material/Paper";
 import Todolist from "../Todolist/Todolist";
 import {
     CreateTodolist,
@@ -26,9 +15,11 @@ import {
 import {changeFilterTodoListAC} from "../../redux/reducers/todolist-reducer/todolist-actions";
 import {ToggleTheme} from "../Common/ToggleTheme/ToggleTheme";
 import {logout} from "../../redux/reducers/auth-reducer/auth-reducer";
+import {AppBar, Box, Container, Grid, IconButton, LinearProgress, Paper, Toolbar, Typography} from "@mui/material";
+import {Logout, Menu} from "@mui/icons-material";
 
 
-export const Main = React.memo( () => {
+export const Main = memo( () => {
     const dispatch = useDispatch<Dispatch<AllActionsType | ThunkType>>()
 
     const isLoggedIn = useSelector((state: GlobalStateType) => state.auth.isLoggedIn)
@@ -99,15 +90,15 @@ export const Main = React.memo( () => {
             <AppBar position={"static"}>
                 <Toolbar sx={{justifyContent: 'space-between'}}>
                     <Box>
-                        <IconButton>
-                            <Menu/>
-                        </IconButton>
+                        {/*<IconButton>*/}
+                        {/*    <Menu />*/}
+                        {/*</IconButton>*/}
                         <ToggleTheme onClickHandler={toggleThemeHandler} isDarkTheme={isDarkTheme}/>
                     </Box>
                     <Typography>
                         Todolists
                     </Typography>
-                    {isLoggedIn && <Button onClick={logoutHandler}>Logout</Button>}
+                    {isLoggedIn && <IconButton onClick={logoutHandler}><Logout/></IconButton>}
                 </Toolbar>
                 <div style={{height: "5px"}}>
                     {operationStatus === 'loading' && <LinearProgress/>}
