@@ -63,13 +63,12 @@ const Todolist = React.memo(function ({
 
     return (
         <>
-            <Box>
+            <Box style={{marginBottom:"15px"}}>
                 <EditableSpan
                     variant={"h6"}
                     title={title}
                     renameItem={renameTodoList}
                 />
-
             </Box>
             <AddItemInput
                 id={todolistID}

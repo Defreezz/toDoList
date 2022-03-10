@@ -1,9 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from "react";
 import {TextField, Typography} from "@mui/material";
 import {Variant} from "@mui/material/styles/createTypography";
-import {useSelector} from "react-redux";
-import {stat} from "fs";
-import {GlobalStateType} from "../../../redux/store/store";
+import {Edit} from "@mui/icons-material";
 
 
 type EditableSpanType = {
@@ -63,7 +61,16 @@ export const EditableSpan = React.memo(
                 variant={variant}
                 className={className}
             >
-                {title}
+                <div style={{
+                    width:"100%",
+                    display:"flex",
+                    justifyContent:"space-between"
+                }}>
+                    <Typography noWrap>
+                        {title}
+                    </Typography>
+
+                </div>
             </Typography>
 
 
