@@ -11,7 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AllActionsType, GlobalStateType, ThunkType} from "../../redux/store/store";
 import {useFormik} from "formik";
 import {login} from "../../redux/reducers/auth-reducer/auth-reducer";
-import {ErrorSnackbar} from "../Common/ErrorSnackbar/ErrorSnackbar";
+import {ErrorSnackbar} from "../common/ErrorSnackbar/ErrorSnackbar";
 import {LoginParamsType} from "../../api/api";
 
 

@@ -1,7 +1,7 @@
-import {setOperationStatus, setUiError} from "../../redux/reducers/ui-reducer/ui-actions";
+import {setOperationStatus, setUiError} from "../redux/reducers/ui-reducer/ui-actions";
 import {Dispatch} from "redux";
-import {AllActionsType} from "../../redux/store/store";
-import {CommonResponseType} from "../../api/api";
+import {AllActionsType} from "../redux/store/store";
+import {CommonResponseType} from "../api/api";
 
 export  const handleServerNetworkError = (dispatch:Dispatch<AllActionsType>,message:string) => {
     dispatch(setUiError(message))

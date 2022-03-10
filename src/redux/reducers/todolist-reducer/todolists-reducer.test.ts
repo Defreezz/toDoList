@@ -27,8 +27,8 @@ test('todolist removed', () => {
     expect(endState[0].todolistID).toBe(todolistId2);
 })
 
-test('Added Todolist',() =>{
-    let newTodolistTitle = "New Todolist";
+test('Added todolist',() =>{
+    let newTodolistTitle = "New todolist";
     const endState = todoListsReducer(startState, addTodoListAC(newTodolistTitle))
     expect(endState.length).toBe(3);
     expect(endState[2].title).toBe(newTodolistTitle);
@@ -36,7 +36,7 @@ test('Added Todolist',() =>{
 })
 
 test('change  name', () => {
-    let newTodolistTitle = "New Todolist";
+    let newTodolistTitle = "New todolist";
     const endState = todoListsReducer(startState, renameTodoListAC(todolistId2,newTodolistTitle));
     expect(endState[0].title).toBe("What to learn");
     expect(endState[1].title).toBe(newTodolistTitle);

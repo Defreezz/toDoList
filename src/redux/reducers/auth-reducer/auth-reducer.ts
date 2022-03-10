@@ -2,8 +2,8 @@ import {ThunkType} from "../../store/store";
 import {AuthReducerActionsTypes} from "./auth-actions-types";
 import {setInitializedApp, setOperationStatus, setStatusProgress} from "../ui-reducer/ui-actions";
 import {authAPI, LoginParamsType} from "../../../api/api";
-import {resultCodes} from "../../../utils/resultCodes/result-codes";
-import {handleServerAppError, handleServerNetworkError} from "../../../utils/error-util/error-utils";
+import {resultCodes} from "../../../definitions/result-codes";
+import {handleServerAppError, handleServerNetworkError} from "../../../utils/errorUtils";
 import {createSlice} from "@reduxjs/toolkit";
 
 

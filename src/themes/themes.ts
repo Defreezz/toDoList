@@ -36,13 +36,6 @@ export const lightTheme = createTheme({
                 }
             },
         },
-        MuiListItem: {
-            defaultProps: {
-                sx: {
-                    justifyContent: "space-between",
-                }
-            },
-        },
         MuiButton: {
             defaultProps: {
                 sx: {
@@ -89,13 +82,6 @@ export const darkTheme = createTheme({
                 },
                 elevation1:{
                     margin:"0 0 5px 0",
-                }
-            }
-        },
-        MuiList: {
-            styleOverrides: {
-                root: {
-                    margin: "0 0 40px 0"
                 }
             }
         },

@@ -5,8 +5,8 @@ import * as serviceWorker from './serviceWorker';
 import {Provider} from "react-redux";
 import {store} from "./redux/store/store";
 import {HashRouter, Navigate, Route, Routes} from 'react-router-dom';
-import {Login} from "./Components/Login/Login";
-import {PageNotFound} from "./Components/Utils/PageNotFound/PageNotFound";
+import {Login} from "./Components/login/Login";
+import {PageNotFound} from "./Components/utils/PageNotFound/PageNotFound";
 import App from "./App";
 
 ReactDOM.render(

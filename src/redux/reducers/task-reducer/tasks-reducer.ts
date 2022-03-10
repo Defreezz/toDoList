@@ -4,8 +4,8 @@ import {addTaskAC, changeTaskEntityStatusAC, removeTaskAC, setTasks, updateTaskA
 import {TaskReducerActionsTypes} from "./tasks-actions-types";
 import {TodolistReducerActionsTypes} from "../todolist-reducer/todolist-actions-types";
 import {setOperationStatus} from "../ui-reducer/ui-actions";
-import {resultCodes} from "../../../utils/resultCodes/result-codes";
-import {handleServerAppError, handleServerNetworkError} from "../../../utils/error-util/error-utils";
+import {resultCodes} from "../../../definitions/result-codes";
+import {handleServerAppError, handleServerNetworkError} from "../../../utils/errorUtils";
 
 
 export type TaskStateType = {

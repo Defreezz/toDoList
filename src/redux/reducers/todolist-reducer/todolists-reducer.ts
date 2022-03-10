@@ -10,8 +10,8 @@ import {
 } from "./todolist-actions";
 import {setInitializedApp, setOperationStatus} from "../ui-reducer/ui-actions";
 import {RequestStatusType} from "../ui-reducer/ui-reducer";
-import {resultCodes} from "../../../utils/resultCodes/result-codes";
-import {handleServerAppError, handleServerNetworkError} from "../../../utils/error-util/error-utils";
+import {resultCodes} from "../../../definitions/result-codes";
+import {handleServerAppError, handleServerNetworkError} from "../../../utils/errorUtils";
 import {getTasks} from "../task-reducer/tasks-reducer";
 
 

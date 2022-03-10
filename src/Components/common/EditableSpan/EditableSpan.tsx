@@ -1,6 +1,9 @@
 import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from "react";
 import {TextField, Typography} from "@mui/material";
 import {Variant} from "@mui/material/styles/createTypography";
+import {useSelector} from "react-redux";
+import {stat} from "fs";
+import {GlobalStateType} from "../../../redux/store/store";
 
 
 type EditableSpanType = {
@@ -18,19 +21,24 @@ export const EditableSpan = React.memo(
                   renameItem,
               }: EditableSpanType) {
         console.log("editable_span")
+
+
         const [editMode, setEditMode] = useState(false)
         const [input, setInput] = useState(" ") // записываем пустую, но сетаем тайтл реальный в колбэке
 
         const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) =>
             setInput(e.currentTarget.value), [setInput])
-        const onDoubleClickHandler = useCallback(() => {
+
+         const onDoubleClickHandler = useCallback(() => {
             setEditMode(!editMode);
             setInput(title)
         }, [editMode, title])
+
         const onBlurHandler = useCallback(() => {
             setEditMode(!editMode)
             renameItem(input)
         }, [editMode, input, renameItem])
+
         const onKeyPressHandler = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
             if (e.key === "Enter") {
                 setEditMode(!editMode)

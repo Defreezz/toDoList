@@ -5,12 +5,13 @@ import {AddBoxOutlined} from "@mui/icons-material";
 
 
 type AddItemInputType = {
-    addItem: (title: string) => void
+    id?:string
+    addItem: (title: string,id?:string) => void
     entityStatus?: RequestStatusType
     placeHolder:string
 }
 
-export const AddItemInput = React.memo(function ({addItem, entityStatus,placeHolder}: AddItemInputType) {
+export const AddItemInput = React.memo(function ({id,addItem, entityStatus,placeHolder}: AddItemInputType) {
     console.log("form")
     const [newTaskTittle, setNewTaskTittle] = useState("")
     const [error, setError] = useState<string>("")
@@ -18,12 +19,12 @@ export const AddItemInput = React.memo(function ({addItem, entityStatus,placeHol
     const addItemHandler = useCallback(() => {
         const trimmedTitle = newTaskTittle.trim()
         if (trimmedTitle) {
-            addItem(trimmedTitle)
+            addItem(trimmedTitle,id)
         } else {
             setError("Обязательное поле")
         }
         setNewTaskTittle("")
-    }, [addItem, newTaskTittle])
+    }, [addItem, newTaskTittle,id])
 
     const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setNewTaskTittle(e.currentTarget.value);

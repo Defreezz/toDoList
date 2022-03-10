@@ -1,22 +1,20 @@
-import {AddItemInput} from "../Common/AddItemInput/AddItemInput";
-import {ErrorSnackbar} from "../Common/ErrorSnackbar/ErrorSnackbar";
+import {AddItemInput} from "../common/AddItemInput/AddItemInput";
+import {ErrorSnackbar} from "../common/ErrorSnackbar/ErrorSnackbar";
 import React, {Dispatch, memo, useCallback, useEffect, useMemo} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {AllActionsType, GlobalStateType, ThunkType} from "../../redux/store/store";
 import {toggleTheme} from "../../redux/reducers/theme-reducer/theme-reducer";
-import Todolist from "../Todolist/Todolist";
+import Todolist from "../todolist/Todolist";
 import {
     CreateTodolist,
-    FilterValuesType,
     getTodolists,
     removeTodolist,
     renameTodolist
 } from "../../redux/reducers/todolist-reducer/todolists-reducer";
-import {changeFilterTodoListAC} from "../../redux/reducers/todolist-reducer/todolist-actions";
-import {ToggleTheme} from "../Common/ToggleTheme/ToggleTheme";
+import {ToggleTheme} from "../common/ToggleTheme/ToggleTheme";
 import {logout} from "../../redux/reducers/auth-reducer/auth-reducer";
 import {AppBar, Box, Container, Grid, IconButton, LinearProgress, Paper, Toolbar, Typography} from "@mui/material";
-import {Logout, Menu} from "@mui/icons-material";
+import {Logout} from "@mui/icons-material";
 
 
 export const Main = memo( () => {
@@ -38,9 +36,7 @@ export const Main = memo( () => {
     },[dispatch])
 
 
-    const changeTaskFilter = useCallback((filter: FilterValuesType, todolistID: string) => {
-        dispatch(changeFilterTodoListAC(filter, todolistID))
-    }, [dispatch])
+
     //
     //
     //TODOLIST
@@ -64,7 +60,6 @@ export const Main = memo( () => {
     const todoListRender = useMemo( ()=> {
        return  todoLists.map((tdl) => {
                 console.log(`ListName: ${tdl.title}`)
-                let tasksForRender = tasks[tdl.id]
                 return (
                     <Grid item key={tdl.id}>
                         <Paper elevation={8}>
@@ -73,17 +68,16 @@ export const Main = memo( () => {
                                 key={tdl.id}
                                 todolistID={tdl.id}
                                 title={tdl.title}
-                                tasks={tasksForRender}
+                                tasks={tasks[tdl.id]}
                                 removeTodolist={removeTodoListHandler}
                                 renameTodolist={renameTodolistHandler}
-                                changeTaskFilter={changeTaskFilter}
                                 filterTdl={tdl.filter}
                             />
                         </Paper>
                     </Grid>)
             }
         )
-    },[todoLists,tasks,changeTaskFilter,renameTodolistHandler,removeTodoListHandler])
+    },[todoLists,tasks,renameTodolistHandler,removeTodoListHandler])
 
     return (
         <div style={{minHeight: "100vh", backgroundColor: isDarkTheme ? "#484e50" : "rgba(96,151,225,0.37)"}}>
