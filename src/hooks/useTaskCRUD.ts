@@ -1,11 +1,12 @@
 import {useDispatch} from "react-redux";
-import {Dispatch, useCallback, useMemo} from "react";
-import {AllActionsType, ThunkType} from "../redux/store/store";
+import {useCallback, useMemo} from "react";
+import {ThunkType} from "../redux/store/store";
 import {addTask, removeTask, updateTask} from "../redux/reducers/task-reducer/tasks-reducer";
-import {TaskStatuses} from "../api/api";
+import {TaskStatuses} from "../api";
+
 
 export const useTaskCRUD = () =>{
-    const dispatch = useDispatch<Dispatch<AllActionsType | ThunkType>>()
+    const dispatch = useDispatch<ThunkType>()
 
     const handleTaskRemove = useCallback((todolistID: string, taskID: string) => {
         dispatch(removeTask(todolistID, taskID))

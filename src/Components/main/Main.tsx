@@ -1,8 +1,8 @@
 import {AddItemInput} from "../common/AddItemInput/AddItemInput";
 import {ErrorSnackbar} from "../common/ErrorSnackbar/ErrorSnackbar";
-import React, {Dispatch, memo, useCallback, useEffect, useMemo} from "react";
+import React, {memo, useCallback, useEffect, useMemo} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {AllActionsType, GlobalStateType, ThunkType} from "../../redux/store/store";
+import {GlobalStateType, ThunkType} from "../../redux/store/store";
 import {toggleTheme} from "../../redux/reducers/theme-reducer/theme-reducer";
 import Todolist from "../todolist/Todolist";
 import {
@@ -18,7 +18,7 @@ import {Logout} from "@mui/icons-material";
 
 
 export const Main = memo( () => {
-    const dispatch = useDispatch<Dispatch<AllActionsType | ThunkType>>()
+    const dispatch = useDispatch<ThunkType>()
 
     const isLoggedIn = useSelector((state: GlobalStateType) => state.auth.isLoggedIn)
 

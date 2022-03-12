@@ -1,5 +1,13 @@
 import axios from "axios";
-import {RequestStatusType} from "../redux/reducers/ui-reducer/ui-reducer";
+import {
+    AuthMeResponseType,
+    CommonResponseType,
+    LoginParamsType,
+    TaskType,
+    TodolistType,
+    UpdateTaskModelType
+} from "./types";
+
 
 
 export const instance = axios.create({
@@ -10,68 +18,6 @@ export const instance = axios.create({
     }
 })
 
-export enum TaskStatuses {
-    New,
-    InProgress,
-    Completed,
-    Draft,
-}
-
-export enum TaskPriorities {
-    Low,
-    Middle,
-    High,
-    Urgently,
-    Later,
-}
-
-export type TodolistType = {
-    id: string
-    title: string
-    addedDate: string
-    order: number
-}
-export type TaskType = {
-    id: string
-    title: string
-    description?: string
-    todoListId?: string
-    order?: number
-    status: TaskStatuses
-    priority?: TaskPriorities
-    startDate?: string
-    deadline?: string
-    addedDate?: string
-    entityTaskStatus?:RequestStatusType
-}
-export type UpdateTaskModelType = {
-
-    title: string
-    description: string
-    status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
-}
-export type LoginParamsType = {
-    email: string
-    password: string
-    rememberMe?: boolean
-    captcha?: string
-}
-export type AuthMeResponseType = {
-    id:number
-    email: string
-    login:string
-}
-export type CommonResponseType<T> = {
-    data: T
-    fieldsErrors: Array<string>
-    messages: Array<string>
-    resultCode: 0 | 1
-}
-
-
 export const todolistAPI = {
     async getTodolists() {
         const response = await instance.get<TodolistType[]>(`/todo-lists`)
@@ -81,8 +27,8 @@ export const todolistAPI = {
         const response = await instance.post<CommonResponseType<{ item: TodolistType }>>(`/todo-lists`, {title})
         return response.data
     },
-    async removeTodolist(todolistID: string) {
-        const response = await instance.delete<CommonResponseType<{}>>(`/todo-lists/${todolistID}`)
+    async removeTodolist(id: string) {
+        const response = await instance.delete<CommonResponseType<{}>>(`/todo-lists/${id}`)
         return response.data
     },
     async renameTodolist(todolistID: string, title: string) {

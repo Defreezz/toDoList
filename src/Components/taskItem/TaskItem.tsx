@@ -1,9 +1,9 @@
 import React, {ChangeEvent, useCallback} from "react";
 import {EditableSpan} from "../common/EditableSpan/EditableSpan";
-import {TaskStatuses, TaskType} from "../../api/api";
 import {Checkbox, IconButton, ListItem} from "@mui/material";
 import {Delete} from "@mui/icons-material";
-import {RequestStatusType} from "../../redux/reducers/ui-reducer/ui-reducer";
+import {RequestStatusType, TaskStatuses, TaskType} from "../../api";
+
 
 
 type TaskItemType = {

@@ -1,7 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react';
 import {IconButton, TextField} from "@mui/material";
-import {RequestStatusType} from "../../../redux/reducers/ui-reducer/ui-reducer";
 import {AddBoxOutlined} from "@mui/icons-material";
+import {RequestStatusType} from "../../../api";
 
 
 type AddItemInputType = {

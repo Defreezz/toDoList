@@ -1,18 +1,17 @@
-import {setOperationStatus, setUiError} from "../redux/reducers/ui-reducer/ui-actions";
-import {Dispatch} from "redux";
-import {AllActionsType} from "../redux/store/store";
-import {CommonResponseType} from "../api/api";
+import {ThunkType} from "../redux/store/store";
+import {CommonResponseType} from "../api";
+import {setOperationStatus, setUiError} from "../redux/reducers/ui-reducer/ui-reducer";
 
-export  const handleServerNetworkError = (dispatch:Dispatch<AllActionsType>,message:string) => {
-    dispatch(setUiError(message))
-    dispatch(setOperationStatus("failed"))
+export  const handleServerNetworkError = (dispatch:ThunkType,message:string) => {
+    dispatch(setUiError({error:message}))
+    dispatch(setOperationStatus({operationStatus:"failed"}))
 }
 
-export  const handleServerAppError = <T> (dispatch:Dispatch<AllActionsType>,response:CommonResponseType<T>) => {
+export  const handleServerAppError = <T> (dispatch:ThunkType,response:CommonResponseType<T>) => {
     if (response.messages.length) {
-        dispatch(setUiError(response.messages[0]))
+        dispatch(setUiError({error: response.messages[0]}))
     } else {
-        dispatch(setUiError('some error'))
+        dispatch(setUiError({error:'some error'}))
     }
-    dispatch(setOperationStatus("succeeded"))
+    dispatch(setOperationStatus({operationStatus:"succeeded"}))
 }

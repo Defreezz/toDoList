@@ -1,6 +1,6 @@
-import {TodolistType} from "../../../api/api";
 import {FilterValuesType} from "./todolists-reducer";
-import {RequestStatusType} from "../ui-reducer/ui-reducer";
+import {RequestStatusType, TodolistType} from "../../../api";
+
 
 export const setTodolists = (todolists: Array<TodolistType>) => {
     return {type: "SET-TODOLISTS", todolists} as const

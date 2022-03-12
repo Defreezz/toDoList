@@ -1,5 +1,5 @@
-import {TaskStatuses, TaskType} from "../api/api";
 import {FilterValuesType} from "../redux/reducers/todolist-reducer/todolists-reducer";
+import {TaskStatuses, TaskType} from "../api";
 
 export const tasksForRender = (tasks: TaskType[], filterTdl: FilterValuesType) => {
     if (filterTdl === "active") {

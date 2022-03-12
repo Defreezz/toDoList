@@ -1,7 +1,7 @@
-import React, {Dispatch, useCallback, useEffect, useLayoutEffect} from 'react';
+import React, {useCallback, useEffect, useLayoutEffect} from 'react';
 import './App.css';
 import {useDispatch, useSelector} from "react-redux";
-import {AllActionsType, GlobalStateType, ThunkType} from "./redux/store/store";
+import {GlobalStateType, ThunkType} from "./redux/store/store";
 import ThemeProvider from "@mui/material/styles/ThemeProvider";
 import {darkTheme, lightTheme} from "./themes/themes";
 import {Main} from "./Components/main/Main";
@@ -13,7 +13,7 @@ import {CircularProgressWithLabel} from "./Components/common/CircularProgress/Ci
 
 const App = React.memo(function () {
 
-    const dispatch = useDispatch<Dispatch<AllActionsType | ThunkType>>()
+    const dispatch = useDispatch< ThunkType>()
 
     const isDarkTheme = useSelector((state: GlobalStateType) => state.theme.isDarkTheme)
     const isLoggedIn = useSelector((state: GlobalStateType) => state.auth.isLoggedIn)
@@ -35,9 +35,11 @@ const App = React.memo(function () {
     useLayoutEffect(() => {
         getLocalStorageThemeHandler()
     }, [getLocalStorageThemeHandler])
+
     useEffect(() => {
         setLocalStorageThemeHandler(isDarkTheme)
     }, [setLocalStorageThemeHandler, isDarkTheme])
+
     useLayoutEffect(() => {
         dispatch(initializeApp())
     }, [dispatch])

@@ -1,4 +1,4 @@
-import React, {Dispatch} from 'react'
+import React from 'react'
 import Grid from '@mui/material/Grid';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
@@ -8,15 +8,15 @@ import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import {useDispatch, useSelector} from "react-redux";
-import {AllActionsType, GlobalStateType, ThunkType} from "../../redux/store/store";
+import {GlobalStateType, ThunkType} from "../../redux/store/store";
 import {useFormik} from "formik";
 import {login} from "../../redux/reducers/auth-reducer/auth-reducer";
 import {ErrorSnackbar} from "../common/ErrorSnackbar/ErrorSnackbar";
-import {LoginParamsType} from "../../api/api";
+import {LoginParamsType} from "../../api";
 
 
 export const Login = React.memo(() => {
-    const dispatch = useDispatch<Dispatch<AllActionsType | ThunkType>>()
+    const dispatch = useDispatch<ThunkType>()
 
     const isDarkTheme = useSelector((state: GlobalStateType) => state.theme.isDarkTheme)
 

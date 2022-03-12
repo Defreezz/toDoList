@@ -3,13 +3,12 @@ import {AddItemInput} from "../common/AddItemInput/AddItemInput";
 import {EditableSpan} from "../common/EditableSpan/EditableSpan";
 import {FilterValuesType} from "../../redux/reducers/todolist-reducer/todolists-reducer";
 import {TaskItem} from "../taskItem/TaskItem";
-import {TaskType} from "../../api/api";
 import {Delete} from "@mui/icons-material";
 import {Box, Button, ButtonGroup, IconButton, List, Paper} from "@mui/material";
-import {RequestStatusType} from "../../redux/reducers/ui-reducer/ui-reducer";
 import {tasksForRender} from "../../utils";
 import {useTaskCRUD} from "../../hooks/useTaskCRUD";
 import {useTasksFilter} from "../../hooks/useTasksFilter";
+import {RequestStatusType, TaskType} from "../../api";
 
 type TodolistType = {
     todolistID: string

@@ -1,22 +1,22 @@
-import {Dispatch, useCallback, useMemo} from "react";
-import {changeFilterTodoListAC} from "../redux/reducers/todolist-reducer/todolist-actions";
+import {useCallback, useMemo} from "react";
 import {useDispatch} from "react-redux";
-import {AllActionsType, ThunkType} from "../redux/store/store";
+import {ThunkType} from "../redux/store/store";
+import {changeFilterTodoList} from "../redux/reducers/todolist-reducer/todolists-reducer";
 
 
-export const useTasksFilter = (todolistID:string) =>{
-    const dispatch = useDispatch<Dispatch<AllActionsType | ThunkType>>()
+export const useTasksFilter = (id:string) =>{
+    const dispatch = useDispatch<ThunkType>()
     const handleFilterAllClick = useCallback(() => {
-        dispatch(changeFilterTodoListAC("all", todolistID))
-    }, [dispatch, todolistID])
+        dispatch(changeFilterTodoList({filter:"all", id}))
+    }, [dispatch, id])
 
     const handleFilterActiveClick = useCallback(() => {
-        dispatch(changeFilterTodoListAC("active", todolistID))
-    }, [dispatch, todolistID])
+        dispatch(changeFilterTodoList({filter:"active", id}))
+    }, [dispatch, id])
 
     const handleFilterCompletedClick = useCallback(() => {
-        dispatch(changeFilterTodoListAC("completed", todolistID))
-    }, [dispatch, todolistID])
+        dispatch(changeFilterTodoList({filter:"completed", id}))
+    }, [dispatch, id])
 
     return useMemo(
         ()=>({
