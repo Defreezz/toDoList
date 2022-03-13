@@ -28,7 +28,7 @@ export const TaskItem = React.memo(({
             renameTask(task.id, todoListID, newTitle)
         }, [task.id, todoListID, renameTask])
 
-        const onChangeStatusHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+        const handleChangeCheckboxValue = useCallback((e: ChangeEvent<HTMLInputElement>) => {
             const isDoneValue = e.currentTarget.checked
             changeTaskStatus(
                 todoListID, task.id, isDoneValue ? TaskStatuses.Completed : TaskStatuses.New)
@@ -45,7 +45,7 @@ export const TaskItem = React.memo(({
                     <Checkbox
                         size={"small"}
                         checked={!!task.status}
-                        onChange={onChangeStatusHandler}
+                        onChange={handleChangeCheckboxValue}
                     />
                     <EditableSpan
                         variant={"body2"}

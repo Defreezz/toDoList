@@ -4,7 +4,6 @@ import {createSlice} from "@reduxjs/toolkit";
 import {authAPI, LoginParamsType} from "../../../api";
 import {AuthReducerActionsTypes} from "./auth-actions-types";
 import {setInitializedApp, setOperationStatus, setProgress} from "../ui-reducer/ui-reducer";
-import {getTodolists} from "../todolist-reducer/todolists-reducer";
 
 
 const slice = createSlice({

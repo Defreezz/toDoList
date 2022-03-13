@@ -8,7 +8,7 @@ import {authReducer} from "../reducers/auth-reducer/auth-reducer";
 import {configureStore} from "@reduxjs/toolkit";
 
 export type GlobalStateType = ReturnType<typeof rootReducer>
-export type ThunkType = typeof store.dispatch
+export type DispatchType = typeof store.dispatch
 
 
 const rootReducer = combineReducers({

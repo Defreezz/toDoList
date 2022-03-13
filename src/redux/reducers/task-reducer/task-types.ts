@@ -7,6 +7,15 @@
 
 import {RequestStatusType, TaskType} from "../../../api";
 
+export type TaskStateType = {
+    [key: string]: TaskType[]
+}
+export type ParamUpdateTask = {
+    todolistID: string
+    taskID: string
+    changes: Partial<TaskType>
+}
+
 export type SetTasksType = {
     payload: {
         todolistID: string
@@ -30,7 +39,7 @@ export type UpdateTaskType = {
     payload: {
         todolistID: string
         taskID: string
-        updateTask:TaskType
+        changes:TaskType
     }
 }
 export type ChangeTaskEntityStatusType = {

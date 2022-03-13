@@ -1,11 +1,11 @@
 import {useCallback, useMemo} from "react";
 import {useDispatch} from "react-redux";
-import {ThunkType} from "../redux/store/store";
+import {DispatchType} from "../redux/store/store";
 import {changeFilterTodoList} from "../redux/reducers/todolist-reducer/todolists-reducer";
 
 
 export const useTasksFilter = (id:string) =>{
-    const dispatch = useDispatch<ThunkType>()
+    const dispatch = useDispatch<DispatchType>()
     const handleFilterAllClick = useCallback(() => {
         dispatch(changeFilterTodoList({filter:"all", id}))
     }, [dispatch, id])

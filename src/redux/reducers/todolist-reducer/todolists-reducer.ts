@@ -12,6 +12,8 @@ import {
     RenameTodoListType,
     SetTodolistsType
 } from "./todolist-actions-types";
+import {DispatchType} from "../../store/store";
+import {ThunkActionDispatch} from "redux-thunk";
 
 export type FilterValuesType = "all" | "active" | "completed"
 export type TodolistDomainType = TodolistType & {
@@ -66,7 +68,7 @@ export const todoListsReducer = slice.reducer
 
 
 //Thunk
-export const getTodolists = () => async (dispatch: any) => {
+export const getTodolists = () => async (dispatch: ThunkActionDispatch<DispatchType>) => {
 
     try {
         const response = await todolistAPI.getTodolists()
@@ -82,7 +84,7 @@ export const getTodolists = () => async (dispatch: any) => {
     }
 
 }
-export const CreateTodolist = (title: string) => async (dispatch: any) => {
+export const CreateTodolist = (title: string) => async (dispatch: ThunkActionDispatch<DispatchType>) => {
     try {
         dispatch(setOperationStatus({operationStatus: "loading"}))
         const response = await todolistAPI.createTodolist(title)
@@ -98,7 +100,7 @@ export const CreateTodolist = (title: string) => async (dispatch: any) => {
     }
 
 }
-export const removeTodolist = (id: string) => async (dispatch: any) => {
+export const removeTodolist = (id: string) => async (dispatch: ThunkActionDispatch<DispatchType>) => {
     dispatch(changeTodolistEntityStatus({id, entityStatus: "loading"}))
     dispatch(setOperationStatus({operationStatus: "loading"}))
     const response = await todolistAPI.removeTodolist(id)
@@ -108,7 +110,7 @@ export const removeTodolist = (id: string) => async (dispatch: any) => {
         dispatch(setOperationStatus({operationStatus: "succeeded"}))
     }
 }
-export const renameTodolist = (id: string, title: string) => async (dispatch: any) => {
+export const renameTodolist = (id: string, title: string) => async (dispatch: ThunkActionDispatch<DispatchType>) => {
     dispatch(setOperationStatus({operationStatus: "loading"}))
     const response = await todolistAPI.renameTodolist(id, title)
     if (response.resultCode === resultCodes.success) {
