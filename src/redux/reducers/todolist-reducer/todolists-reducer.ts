@@ -9,7 +9,7 @@ import {
     ChangeFilterTodoListType,
     changeTodolistEntityStatusType,
     RemoveTodoListType,
-    RenameTodoListType,
+    RenameTodoListType, reorderTodolistType,
     SetTodolistsType
 } from "./todolist-actions-types";
 import {DispatchType} from "../../store/store";
@@ -35,8 +35,6 @@ const slice = createSlice({
         addTodoList(state, action: AddTodoListType) {
             state.unshift({
                 ...action.payload,
-                addedDate: "",
-                order: 0,
                 filter: "all",
                 entityStatus: "idle"
             })
@@ -62,7 +60,7 @@ export const {
     renameTodoList,
     addTodoList,
     changeTodolistEntityStatus,
-    setTodolists
+    setTodolists,
 } = slice.actions
 export const todoListsReducer = slice.reducer
 
@@ -90,7 +88,7 @@ export const CreateTodolist = (title: string) => async (dispatch: ThunkActionDis
         const response = await todolistAPI.createTodolist(title)
         if (response.resultCode === resultCodes.success) {
             //dispatch(getTodolists())}
-            dispatch(addTodoList({title, id: response.data.item.id}))
+            dispatch(addTodoList({...response.data.item}))
             dispatch(setOperationStatus({operationStatus: "succeeded"}))
         } else {
             handleServerAppError<{ item: TodolistType }>(dispatch, response)

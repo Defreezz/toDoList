@@ -1,6 +1,7 @@
-import {addNewTask, addTask, deleteTask, modifyTask, removeTask, tasksReducer, TaskStateType} from "./tasks-reducer";
+import {addNewTask, deleteTask, modifyTask, tasksReducer} from "./tasks-reducer";
 import {addTodoList} from "../todolist-reducer/todolists-reducer";
-import {TaskStatuses, TaskType} from "../../../api";
+import {TaskStatuses} from "../../../api";
+import {TaskStateType} from "./task-types";
 
 let startState: TaskStateType
 
@@ -49,8 +50,8 @@ test('correct task should be added to correct array', () => {
 })
 
 test('status of specified task should be changed', () => {
-    const updateTask = {id: "2", title: 'juice', status: TaskStatuses.New}
-    const action = modifyTask({taskID:'2',todolistID:'todolistId1',updateTask});
+    const changes = {id: "2", title: 'juice', status: TaskStatuses.New}
+    const action = modifyTask({taskID:'2',todolistID:'todolistId1',changes});
     const endState = tasksReducer(startState, action)
 
     expect(endState['todolistId2'][1].status).toBe(TaskStatuses.New);
@@ -59,8 +60,8 @@ test('status of specified task should be changed', () => {
 });
 
 test('title of task should be changed', () => {
-    const updateTask = {id: "2", title: 'juice', status: TaskStatuses.New}
-    const action = modifyTask({taskID:'2',todolistID:'todolistId1',updateTask});
+    const changes = {id: "2", title: 'juice', status: TaskStatuses.New}
+    const action = modifyTask({taskID:'2',todolistID:'todolistId1',changes});
     const endState = tasksReducer(startState, action)
 
     expect(endState['todolistId2'][2].title).toBe("tea");
@@ -68,7 +69,7 @@ test('title of task should be changed', () => {
 });
 
 test('new array should be added when new todolist is added', () => {
-    const action = addTodoList({id:'todolistId3',title:'new todo'});
+    const action = addTodoList({id:'todolistId3',title:'new todo',addedDate:'',order:0 });
     const endState = tasksReducer(startState, action)
     const keys = Object.keys(endState);
     const newKey = keys.find(k => k != 'todolistId1' && k != 'todolistId2');

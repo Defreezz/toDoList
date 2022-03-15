@@ -56,13 +56,12 @@ const Todolist = React.memo(function ({
         }
     ), [handleTaskStatusChange, filterTdl, handleTaskRemove, handleTaskRename, todolistID, tasks])
 
-
     const buttonStatusClass = useCallback((filter: FilterValuesType) =>
         filter === filterTdl ? "secondary" : "primary", [filterTdl])
 
     return (
         <>
-            <Box style={{marginBottom:"15px"}}>
+            <Box style={{marginBottom: "15px"}}>
                 <EditableSpan
                     variant={"h6"}
                     title={title}

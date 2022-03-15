@@ -20,10 +20,7 @@ export type RemoveTodoListType = {
     }
 }
 export type AddTodoListType = {
-    payload: {
-        title: string
-        id: string
-    }
+    payload: TodolistType
 }
 export type RenameTodoListType = {
     payload: {
@@ -41,5 +38,11 @@ export type changeTodolistEntityStatusType = {
     payload: {
         id: string,
         entityStatus: RequestStatusType
+    }
+}
+export type reorderTodolistType = {
+    payload: {
+        id: string,
+        order: number
     }
 }

@@ -22,7 +22,7 @@ const slice = createSlice({
         },
         setUiError(state, action: SetUiErrorType) {
             state.error = action.payload.error
-        }
+        },
     }
 })
 
