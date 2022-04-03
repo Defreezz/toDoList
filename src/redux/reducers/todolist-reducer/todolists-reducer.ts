@@ -1,19 +1,19 @@
-import {resultCodes} from "../../../definitions/result-codes";
-import {handleServerAppError, handleServerNetworkError} from "../../../utils";
-import {getTasks} from "../task-reducer/tasks-reducer";
-import {RequestStatusType, todolistAPI, TodolistType} from "../../../api";
-import {setInitializedApp, setOperationStatus} from "../ui-reducer/ui-reducer";
-import {createSlice} from "@reduxjs/toolkit";
+import { resultCodes } from "../../../definitions/result-codes";
+import { handleServerAppError, handleServerNetworkError } from "../../../utils";
+import { getTasks } from "../task-reducer/tasks-reducer";
+import { RequestStatusType, todolistAPI, TodolistType } from "../../../api";
+import { setInitializedApp, setOperationStatus } from "../ui-reducer/ui-reducer";
+import { createSlice } from "@reduxjs/toolkit";
 import {
     AddTodoListType,
     ChangeFilterTodoListType,
-    changeTodolistEntityStatusType,
+    ChangeTodolistEntityStatusType,
     RemoveTodoListType,
-    RenameTodoListType, reorderTodolistType,
+    RenameTodoListType, ReorderTodolistType,
     SetTodolistsType
 } from "./todolist-actions-types";
-import {DispatchType} from "../../store/store";
-import {ThunkActionDispatch} from "redux-thunk";
+import { DispatchType } from "../../store/store";
+import { ThunkActionDispatch } from "redux-thunk";
 
 export type FilterValuesType = "all" | "active" | "completed"
 export type TodolistDomainType = TodolistType & {
@@ -26,7 +26,7 @@ const slice = createSlice({
     initialState: [] as TodolistDomainType[],
     reducers: {
         setTodolists(state, action: SetTodolistsType) {
-           return  action.payload.todolists.map<TodolistDomainType>(tl => ({...tl,entityStatus:'idle', filter: 'all'}))
+            return action.payload.todolists.map<TodolistDomainType>(tl => ({ ...tl, entityStatus: 'idle', filter: 'all' }))
         },
         removeTodoList(state, action: RemoveTodoListType) {
             const index = state.findIndex(tl => tl.id === action.payload.id)
@@ -47,10 +47,13 @@ const slice = createSlice({
             const index = state.findIndex(tl => tl.id === action.payload.id)
             state[index].filter = action.payload.filter
         },
-        changeTodolistEntityStatus(state, action: changeTodolistEntityStatusType) {
+        changeTodolistEntityStatus(state, action: ChangeTodolistEntityStatusType) {
             const index = state.findIndex(tl => tl.id === action.payload.id)
             state[index].entityStatus = action.payload.entityStatus
         },
+        // reorderTodolists(state,action:ReorderTodolistType){
+        //     return  state.sort((a,b) => a.order>b.order?1:-1)
+        // }
     },
 })
 
@@ -71,25 +74,25 @@ export const getTodolists = () => async (dispatch: ThunkActionDispatch<DispatchT
     try {
         const response = await todolistAPI.getTodolists()
         console.log(response)
-        dispatch(setTodolists({todolists: response}))
+        dispatch(setTodolists({ todolists: response }))
         //dispatch(setInitializedApp({initializeStatus: true}))
         response.forEach((ts) => {
             dispatch(getTasks(ts.id))
         })
     } catch (e: any) {
-        dispatch(setInitializedApp({initializeStatus: true}))
+        dispatch(setInitializedApp({ initializeStatus: true }))
         handleServerNetworkError(dispatch, e.message)
     }
 
 }
 export const CreateTodolist = (title: string) => async (dispatch: ThunkActionDispatch<DispatchType>) => {
     try {
-        dispatch(setOperationStatus({operationStatus: "loading"}))
+        dispatch(setOperationStatus({ operationStatus: "loading" }))
         const response = await todolistAPI.createTodolist(title)
         if (response.resultCode === resultCodes.success) {
             //dispatch(getTodolists())}
-            dispatch(addTodoList({...response.data.item}))
-            dispatch(setOperationStatus({operationStatus: "succeeded"}))
+            dispatch(addTodoList({ ...response.data.item }))
+            dispatch(setOperationStatus({ operationStatus: "succeeded" }))
         } else {
             handleServerAppError<{ item: TodolistType }>(dispatch, response)
         }
@@ -99,22 +102,37 @@ export const CreateTodolist = (title: string) => async (dispatch: ThunkActionDis
 
 }
 export const removeTodolist = (id: string) => async (dispatch: ThunkActionDispatch<DispatchType>) => {
-    dispatch(changeTodolistEntityStatus({id, entityStatus: "loading"}))
-    dispatch(setOperationStatus({operationStatus: "loading"}))
+    dispatch(changeTodolistEntityStatus({ id, entityStatus: "loading" }))
+    dispatch(setOperationStatus({ operationStatus: "loading" }))
     const response = await todolistAPI.removeTodolist(id)
     if (response.resultCode === resultCodes.success) {
         //dispatch(getTodolists())
-        dispatch(removeTodoList({id}))
-        dispatch(setOperationStatus({operationStatus: "succeeded"}))
+        dispatch(removeTodoList({ id }))
+        dispatch(setOperationStatus({ operationStatus: "succeeded" }))
     }
 }
 export const renameTodolist = (id: string, title: string) => async (dispatch: ThunkActionDispatch<DispatchType>) => {
-    dispatch(setOperationStatus({operationStatus: "loading"}))
+    dispatch(setOperationStatus({ operationStatus: "loading" }))
     const response = await todolistAPI.renameTodolist(id, title)
     if (response.resultCode === resultCodes.success) {
         //dispatch(getTodolists())
-        dispatch(renameTodoList({id, title}))
-        dispatch(setOperationStatus({operationStatus: "succeeded"}))
+        dispatch(renameTodoList({ id, title }))
+        dispatch(setOperationStatus({ operationStatus: "succeeded" }))
+    }
+}
+
+export const reorderTodolists = (currentID: string, id: string) => async (dispatch: ThunkActionDispatch<DispatchType>) => {
+    try {
+        dispatch(setOperationStatus({ operationStatus: "loading" }))
+        const response = await todolistAPI.reorderTodoList(currentID, id)
+        if (response.resultCode === resultCodes.success) {
+            await dispatch(getTodolists())
+            dispatch(setOperationStatus({ operationStatus: "succeeded" }))
+        } else {
+            handleServerAppError<{}>(dispatch, response)
+        }
+    } catch (e: any) {
+        handleServerNetworkError(dispatch, e.message)
     }
 }
 

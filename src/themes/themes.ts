@@ -1,4 +1,4 @@
-import {createTheme} from "@mui/material";
+import { createTheme } from "@mui/material";
 
 export const lightTheme = createTheme({
     palette: {
@@ -29,12 +29,23 @@ export const lightTheme = createTheme({
                     minHeight: "500px",
                     padding: "18px",
                     width: "300px",
+                    '&:hover': {
+                        cursor: "grab",
+                    }
                 },
-                elevation1:{
-                    margin:"0 0 5px 0",
-                    backgroundColor:"#c2d7f3"
+                elevation1: {
+                    margin: "0 0 5px 0",
+                    backgroundColor: "#c2d7f3"
                 }
             },
+
+        },
+        MuiList: {
+            defaultProps: {
+                sx: {
+                    cursor: "default"
+                }
+            }
         },
         MuiButton: {
             defaultProps: {
@@ -46,6 +57,13 @@ export const lightTheme = createTheme({
                 },
 
             },
+        },
+        MuiTypography: {
+            styleOverrides: {
+                h6: {
+                    cursor: "default"
+                }
+            }
         },
     },
 });
@@ -79,9 +97,19 @@ export const darkTheme = createTheme({
                     minHeight: "500px",
                     padding: "18px",
                     width: "300px",
+                    '&:hover': {
+                        cursor: "grab",
+                    }
                 },
-                elevation1:{
-                    margin:"0 0 5px 0",
+                elevation1: {
+                    margin: "0 0 5px 0",
+                }
+            }
+        },
+        MuiList: {
+            defaultProps: {
+                sx: {
+                    cursor: "default"
                 }
             }
         },
@@ -102,6 +130,13 @@ export const darkTheme = createTheme({
                 },
 
             },
+        },
+        MuiTypography: {
+            styleOverrides: {
+                h6: {
+                    cursor: "default"
+                }
+            }
         },
     }
 });

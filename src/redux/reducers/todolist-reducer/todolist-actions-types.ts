@@ -34,13 +34,13 @@ export type ChangeFilterTodoListType = {
         id: string
     }
 }
-export type changeTodolistEntityStatusType = {
+export type ChangeTodolistEntityStatusType = {
     payload: {
         id: string,
         entityStatus: RequestStatusType
     }
 }
-export type reorderTodolistType = {
+export type ReorderTodolistType = {
     payload: {
         id: string,
         order: number
